@@ -15,8 +15,11 @@ app.use('/api/', basicAuth)
 app.use('/api/users/', require('./users/user.controller.js'))
 app.use('/api/storage/', require('./storage/storage.controller.js'))
 
-app.use(express.static(path.join(__dirname, '../../deploy')));
-console.log(path.join(__dirname, '../../deploy'))
+app.use(express.static('deploy'));
+
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, '../../deploy/index.html'))
+})
 
 app.use(errorHandler)
 
