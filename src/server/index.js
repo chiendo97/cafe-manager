@@ -23,7 +23,7 @@ app.get('*', (req, res) => {
 
 app.use(errorHandler)
 
-const port = process.env.NODE_ENV === 'production' ? 80 : 4000
+const port = 4000
 const server = app.listen(port, () => {
 	console.log('Server listening on port ' + port)
 })
