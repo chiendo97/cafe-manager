@@ -3,7 +3,8 @@ const userService = require('../users/user.service.js')
 module.exports = basicAuth
 
 async function basicAuth(req, res, next) {
-	if (req.path === '/api/users/authenticate') {
+	console.log('path of basicAuth: ', req.path)
+	if (req.path === '/users/authenticate') {
 		return next()
 	}
 

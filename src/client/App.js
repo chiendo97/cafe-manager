@@ -11,12 +11,12 @@ import { StoragePage } from './components/StoragePage.js'
 export default class App extends Component {
   render() {
     return (
-			<Router>
+			<div>
 				<PrivateRoute exact path = '/' component = { HomePage } />
 				<PrivateRoute exact path = '/usermanager' component = { UserManagerPage } />
 				<PrivateRoute exact path = '/storage' component = { StoragePage } />
 				<Route path='/login' component = { LoginPage }/>
-			</Router>
+			</div>
     );
   }
 }
