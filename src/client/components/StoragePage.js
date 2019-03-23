@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
+import { Form, Col, Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap"
 
 import { storageService } from '../_services/storage.service.js'
 
@@ -90,34 +91,37 @@ class StoragePage extends React.Component {
 		const { error } = this.state
 		return (
 			<div>
+				<h1>Storage</h1>
+				<ReactTable
+					data = {items}
+					columns = {columns}
+					defaultPageSize={5}
+				/>
 				<h2> Add new item </h2>
 				<form onSubmit={this.handleSubmit}>
-					<div>
-						<label htmlFor="name">Name </label> 
-						<input type="text" name="name" value={name} autoComplete="off" onChange={this.handleChange} />
-					</div>
-					<div>
-						<label htmlFor="price">Price </label> 
-						<input type="text" name="price" value={price} autoComplete="off" onChange={this.handleChange} />
-					</div>
-					<div>
-						<label htmlFor="amount">Amount </label> 
-						<input type="text" name="amount" value={amount} autoComplete="off" onChange={this.handleChange} />
-					</div>
-					<div>
-						<button>Add item</button>
-					</div>
+					<Form.Row>
+						<Form.Group as={Col} >
+							<Form.Label>Name</Form.Label>
+							<Form.Control name="name" value={name} autoComplete="off" type="text" placeholder="Username" onChange={this.handleChange} />
+						</Form.Group>
+						<Form.Group as={Col} >
+							<Form.Label>Price</Form.Label>
+							<Form.Control name="price" value={price} autoComplete="off" type="text" placeholder="Username" onChange={this.handleChange} />
+						</Form.Group>
+						<Form.Group as={Col} >
+							<Form.Label>Amount</Form.Label>
+							<Form.Control name="amount" value={amount} autoComplete="off" type="text" placeholder="Username" onChange={this.handleChange} />
+						</Form.Group>
+					</Form.Row>
+					<Button variant="primary" type="submit">
+						Submit
+					</Button>
 					<div>
 						{error &&
 								<div> { error } </div>
 						}
 					</div>
 				</form>
-				<h1>Storage</h1>
-				<ReactTable
-					data = {items}
-					columns = {columns}
-				/>
 			</div>
 		)
 	}

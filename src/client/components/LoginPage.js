@@ -31,6 +31,9 @@ class LoginPage extends React.Component {
 
 		// stop here if form is invalid
 		if (!(username && password)) {
+			this.setState({
+				error: 'Invalid input'
+			})
 			return;
 		}
 
@@ -50,17 +53,18 @@ class LoginPage extends React.Component {
 						<div>
 							<h2>Login</h2>
 							<form onSubmit={this.handleSubmit}>
-								<div>
-									<label htmlFor="username">Username</label> 
-									<input type="text" name="username" value={username} autoComplete="off" onChange={this.handleChange} />
-								</div>
-								<div>
-									<label htmlFor="password">Password</label>
-									<input type="password" name="password" value={password} onChange={this.handleChange} />
-								</div>
-								<div>
-									<button>Login</button>
-								</div>
+								<Form.Group controlId="formBasicEmail">
+									<Form.Label>Email address</Form.Label>
+									<Form.Control name="username" value={username} autoComplete="off" type="text" placeholder="Username" onChange={this.handleChange} />
+								</Form.Group>
+
+								<Form.Group controlId="formBasicPassword">
+									<Form.Label>Password</Form.Label>
+									<Form.Control name="password" value={password} type="password" placeholder="Password" onChange={this.handleChange} />
+								</Form.Group>
+								<Button variant="primary" type="submit">
+									Submit
+								</Button>
 								<div>
 									{error &&
 											<div> { error } </div>
