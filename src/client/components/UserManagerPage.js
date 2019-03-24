@@ -8,11 +8,11 @@ import { userService } from '../_services/user.service.js'
 const columns = [
 	{
 		Header: 'First name',
-		accessor: 'firstName',
+		accessor: 'firstname',
 	},
 	{
 		Header: 'Last name',
-		accessor: 'lastName'
+		accessor: 'lastname'
 	},
 ]
 
@@ -38,11 +38,18 @@ class UserManagerPage extends React.Component {
 			user: JSON.parse(localStorage.getItem('user')),
 		})
 
-		userService.getAll().then(users => {
-			this.setState( {
-				users
-			} )
-		})
+		userService.getAll().then(
+			users => {
+				this.setState( {
+					users
+				})
+			},
+			error => {
+				this.setState({
+					error
+				})
+			}
+		)
 	}
 
 	handleChange(e) {
@@ -66,12 +73,15 @@ class UserManagerPage extends React.Component {
 
 		userService.addUser(username, password, firstName, lastName)
 			.then(
-						user => {
-							userService.getAll().then(users => {
-								this.setState( {
-									users
-								} )
-							})
+						() => {
+							userService.getAll().then(
+								users => {
+									this.setState( { users })
+								},
+								error => {
+									this.setState({ error })
+								}
+							)
 
 							this.setState({
 								username: '',
@@ -79,9 +89,9 @@ class UserManagerPage extends React.Component {
 								firstName: '',
 								lastName: ''
 							})
-						},
-						error => this.setState({ error })
-			);
+						}
+			)
+			.catch( error => this.setState({ error }) )
 	}
 
 	render() {
@@ -94,15 +104,26 @@ class UserManagerPage extends React.Component {
 					User Manager Page
 				</h1>
 				<h3>
-					 Hello {user.firstName}
+					Current user:
 				</h3>
-				<h2> All users: </h2>
+					<div>
+						<span> First Name: { user.firstname }</span>
+					</div>
+					<div>
+						<span> Last Name: { user.lastname }</span>
+					</div>
+				<h3> All users: </h3>
+				<div>
+					{error &&
+							<div> { error } </div>
+					}
+				</div>
 				<ReactTable
 					data = {users}
 					columns = {columns}
 					defaultPageSize={5}
 				/>
-				<h2> Add new user </h2>
+				<h3> Add new user </h3>
 				<form onSubmit={this.handleSubmit}>
 					<Form.Row>
 						<Form.Group as={Col} controlId="formBasicEmail">
@@ -128,11 +149,6 @@ class UserManagerPage extends React.Component {
 					<Button variant="primary" type="submit">
 						Submit
 					</Button>
-					<div>
-						{error &&
-								<div> { error } </div>
-						}
-					</div>
 				</form>
 			</div>
 		)

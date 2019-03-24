@@ -18,9 +18,6 @@ function addUser(username, password, firstName, lastName) {
 
 	return fetch('/api/users/addUser', requestOptions)
 		.then(handleResponse)
-		.then(user => {
-			return user
-		})
 
 }
 
@@ -34,17 +31,19 @@ function login(username, password) {
 
 	return fetch('/api/users/authenticate', requestOptions)
 		.then(handleResponse)
-		.then(user => {
-			// login successful if there's a user in the response
-			if (user) {
-				// store user details and basic auth credentials in local storage 
-				// to keep user logged in between page refreshes
-				user.authdata = window.btoa(username + ':' + password);
-				localStorage.setItem('user', JSON.stringify(user));
-			}
+		.then(
+				user => {
+					// login successful if there's a user in the response
+					if (user) {
+						// store user details and basic auth credentials in local storage 
+						// to keep user logged in between page refreshes
+						user.authdata = window.btoa(username + ':' + password);
+						localStorage.setItem('user', JSON.stringify(user));
+					}
 
-			return user;
-		});
+					return user;
+				},
+		)
 }
 
 function getAll() {

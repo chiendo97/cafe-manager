@@ -11,11 +11,11 @@ const columns = [
 		accessor: 'name'
 	},
 	{
-		Header: 'Price',
+		Header: 'Price (vnd)',
 		accessor: 'price',
 	},
 	{
-		Header: 'Amount',
+		Header: 'Amount (kg)',
 		accessor: 'amount'
 	}
 ]
@@ -39,12 +39,7 @@ class StoragePage extends React.Component {
 	componentDidMount() {
 
 		storageService.getStorage()
-			.then( items => {
-				this.setState({
-					items
-				})
-			} )
-
+			.then( items => this.setState({ items }) )
 	}
 
 	handleChange(e) {
@@ -66,13 +61,9 @@ class StoragePage extends React.Component {
 
 		storageService.addItem(name, price, amount)
 			.then(
-				item => {
+				() => {
 					storageService.getStorage()
-						.then( items => {
-							this.setState({
-														items
-							})
-						} )
+						.then( items => this.setState({ items }) )
 
 					this.setState({
 						name: '',

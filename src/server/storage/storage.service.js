@@ -1,3 +1,4 @@
+const db = require('../db/queries.js')
 
 const storage = [
 	{
@@ -13,20 +14,14 @@ module.exports = {
 }
 
 async function getStorage() {
-	return storage.map( item => {
-		return item
-	})
+
+	return db.query('SELECT * FROM storage')
+		.then( (res) => {
+			return res.rows;
+		})
 }
 
 async function addItem({ name, price, amount }) {
-	const item = {
-		name,
-		price,
-		amount,
-		id: 1
-	}
 
-	storage.push(item)
-
-	return item;
+	return db.query('INSERT INTO storage (name, price, amount) VALUES ($1, $2, $3)', [name, price, amount])
 }

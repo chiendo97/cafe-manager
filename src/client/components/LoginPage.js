@@ -39,12 +39,14 @@ class LoginPage extends React.Component {
 
 		userService.login(username, password)
 			.then(
-						user => {
-							const { from } = this.props.location.state || { from: { pathname: "/" } };
-							this.props.history.push(from);
-						},
-						error => this.setState({ error })
-			);
+					user => {
+						const { from } = this.props.location.state || { from: { pathname: "/" } };
+						this.props.history.push(from);
+					},
+					error => {
+						this.setState({ error })
+					} 
+			)
 	}
 
 	render() {

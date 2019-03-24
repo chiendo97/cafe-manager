@@ -15,6 +15,6 @@ function getStorage(req, res, next) {
 
 function addItem(req, res, next) {
 	storageService.addItem(req.body)
-		.then(item => res.json(item))
+		.then( () => res.json() )
 		.catch(error => next(error))
 }
