@@ -1,31 +1,28 @@
 import { authHeader, postHeader } from '../_helpers/auth-header.js'
 import handleResponse from '../_helpers/handle-response.js'
 
-export const storageService = {
-	getStorage,
-	addItem,
+export const menuService = {
+	getMenu,
+	addMenu
 }
 
-function getStorage() {
+function getMenu() {
 	const requestOptions = {
 		method : 'GET',
 		headers: authHeader()
 	}
 
-	return fetch('/api/storage/getStorage', requestOptions).then(handleResponse)
+	return fetch('/api/menu/getMenu', requestOptions).then(handleResponse)
 
 }
 
-function addItem(name, price, amount) {
+function addMenu(name, price, desc) {
 	const requestOptions = {
 		method: 'POST',
 		headers: postHeader(),
-		body: JSON.stringify({ name, price, amount })
+		body: JSON.stringify({ name, price, desc })
 	}
 
-	return fetch('/api/storage/addItem', requestOptions)
+	return fetch('/api/menu/addMenu', requestOptions)
 		.then(handleResponse)
-		.then(item => {
-			return item
-		})
 }

@@ -1,5 +1,4 @@
-const db = require('../db/queries.js')
-
+const User = require('../db/models/users.js')
 
 module.exports = {
 	authenticate,
@@ -7,31 +6,38 @@ module.exports = {
 	addUser
 }
 
+async function getUserByUsername(username) {
+
+	return User.findOne({ username }, (err, user) => {
+		if (err) throw err
+		return user
+	})
+}
+
 async function authenticate({ username, password }) {
 
-	return db.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password])
-		.then(res => {
-			const user = res.rows[0]
-			if (user) {
-				const { password, ...userWithoutPassword } = user
-				return userWithoutPassword
-			}
-		})
+	return User.findOne({ username, password }, (err, user) => {
+		if (err) throw err
+		if (user) {
+			const { password, ...userWithoutPassword } = user
+			return userWithoutPassword
+		}
+	})
 }
 
 async function getAll() {
 
-	return db.query('SELECT * FROM users ORDER BY id ASC')
-		.then(res => {
-			const users = res.rows
-			return users.map( u => {
-				const { password, ...userWithoutPassword } = u
-				return userWithoutPassword
-			} )
-		})
+	return User.find({}, (err, users) => {
+		if (err) throw err
+		return users.map( u => {
+			const { password, ...userWithoutPassword } = u
+			return userWithoutPassword
+		} )
+	})
 }
 
 async function addUser( {username, password, firstName, lastName }) {
 
-	return db.query('INSERT INTO users (username, password, firstname, lastname) VALUES ($1, $2, $3, $4)', [username, password, firstName, lastName])
+	const user = new User({ username, password, firstname: firstName, lastname: lastName })
+	return user.save()
 }

@@ -9,6 +9,8 @@ import { LoginPage } from './components/LoginPage.js'
 import { HomePage } from './components/HomePage.js'
 import { UserManagerPage } from './components/UserManagerPage.js'
 import { StoragePage } from './components/StoragePage.js'
+import { MenuPage } from './components/MenuPage.js'
+import { ReceiptPage } from './components/ReceiptPage.js'
 
 export default class App extends Component {
   render() {
@@ -24,6 +26,12 @@ export default class App extends Component {
 						<Nav.Link href="/usermanager">Users Manager</Nav.Link>
 					</Nav.Item>
 					<Nav.Item>
+						<Nav.Link href="/receipt">Receipt</Nav.Link>
+					</Nav.Item>
+					<Nav.Item>
+						<Nav.Link href="/menu">Menu</Nav.Link>
+					</Nav.Item>
+					<Nav.Item>
 						<Nav.Link href="/storage">Storage</Nav.Link>
 					</Nav.Item>
 					<Nav.Item>
@@ -33,7 +41,9 @@ export default class App extends Component {
 				<Switch>
 					<PrivateRoute exact path = '/' component = { HomePage } />
 					<PrivateRoute exact path = '/usermanager' component = { UserManagerPage } />
+					<PrivateRoute exact path = '/menu' component = { MenuPage } />
 					<PrivateRoute exact path = '/storage' component = { StoragePage } />
+					<PrivateRoute exact path = '/receipt' component = { ReceiptPage } />
 					<Route path='/login' component = { LoginPage }/>
 					<Route component = { Page404NotFound }/>
 				</Switch>

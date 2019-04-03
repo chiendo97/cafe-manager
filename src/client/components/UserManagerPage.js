@@ -87,7 +87,8 @@ class UserManagerPage extends React.Component {
 								username: '',
 								password: '',
 								firstName: '',
-								lastName: ''
+								lastName: '',
+								error: ''
 							})
 						}
 			)
@@ -139,11 +140,11 @@ class UserManagerPage extends React.Component {
 					<Form.Row>
 						<Form.Group as={Col} controlId="formBasicEmail">
 							<Form.Label>First name</Form.Label>
-							<Form.Control name="firstName" value={firstName} autoComplete="off" type="text" placeholder="Username" onChange={this.handleChange} />
+							<Form.Control name="firstName" value={firstName} autoComplete="off" type="text" placeholder="First name" onChange={this.handleChange} />
 						</Form.Group>
 						<Form.Group as={Col} controlId="formBasicEmail">
 							<Form.Label>Last name</Form.Label>
-							<Form.Control name="lastName" value={lastName} autoComplete="off" type="text" placeholder="Username" onChange={this.handleChange} />
+							<Form.Control name="lastName" value={lastName} autoComplete="off" type="text" placeholder="Last name" onChange={this.handleChange} />
 						</Form.Group>
 					</Form.Row>
 					<Button variant="primary" type="submit">

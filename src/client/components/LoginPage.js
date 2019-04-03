@@ -39,41 +39,41 @@ class LoginPage extends React.Component {
 
 		userService.login(username, password)
 			.then(
-					user => {
-						const { from } = this.props.location.state || { from: { pathname: "/" } };
-						this.props.history.push(from);
-					},
-					error => {
-						this.setState({ error })
-					} 
+				user => {
+					const { from } = this.props.location.state || { from: { pathname: "/" } };
+					this.props.history.push(from);
+				},
+				error => {
+					this.setState({ error })
+				} 
 			)
 	}
 
 	render() {
 		const { username, password, error } = this.state;
 		return (
-						<div>
-							<h2>Login</h2>
-							<form onSubmit={this.handleSubmit}>
-								<Form.Group controlId="formBasicEmail">
-									<Form.Label>Email address</Form.Label>
-									<Form.Control name="username" value={username} autoComplete="off" type="text" placeholder="Username" onChange={this.handleChange} />
-								</Form.Group>
+			<div>
+				<h2>Login</h2>
+				<form onSubmit={this.handleSubmit}>
+					<Form.Group controlId="formBasicEmail">
+						<Form.Label>Email address</Form.Label>
+						<Form.Control name="username" value={username} autoComplete="off" type="text" placeholder="Username" onChange={this.handleChange} />
+					</Form.Group>
 
-								<Form.Group controlId="formBasicPassword">
-									<Form.Label>Password</Form.Label>
-									<Form.Control name="password" value={password} type="password" placeholder="Password" onChange={this.handleChange} />
-								</Form.Group>
-								<Button variant="primary" type="submit">
-									Submit
-								</Button>
-								<div>
-									{error &&
-											<div> { error } </div>
-									}
-								</div>
-							</form>
-						</div>
+					<Form.Group controlId="formBasicPassword">
+						<Form.Label>Password</Form.Label>
+						<Form.Control name="password" value={password} type="password" placeholder="Password" onChange={this.handleChange} />
+					</Form.Group>
+					<Button variant="primary" type="submit">
+						Submit
+					</Button>
+					<div>
+						{error &&
+								<div> { error } </div>
+						}
+					</div>
+				</form>
+			</div>
 		);
 	}
 }

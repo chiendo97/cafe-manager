@@ -7,6 +7,9 @@ const path = require('path')
 const basicAuth = require('./_helpers/basic-auth')
 const errorHandler = require('./_helpers/error-handler')
 
+const db = require('./db/db.js')
+const Receipt = require('./db/models/receipt.js')
+
 app.use(bodyParser.json())
 app.use(cors())
 
@@ -14,6 +17,8 @@ app.use('/api/', basicAuth)
 
 app.use('/api/users/', require('./users/user.controller.js'))
 app.use('/api/storage/', require('./storage/storage.controller.js'))
+app.use('/api/menu/', require('./menu/menu.controller.js'))
+app.use('/api/receipt', require('./receipt/receipt.controller.js'))
 
 app.use(express.static('deploy'));
 

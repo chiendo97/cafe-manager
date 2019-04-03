@@ -93,15 +93,15 @@ class StoragePage extends React.Component {
 					<Form.Row>
 						<Form.Group as={Col} >
 							<Form.Label>Name</Form.Label>
-							<Form.Control name="name" value={name} autoComplete="off" type="text" placeholder="Username" onChange={this.handleChange} />
+							<Form.Control name="name" value={name} autoComplete="off" type="text" placeholder="Name" onChange={this.handleChange} />
 						</Form.Group>
 						<Form.Group as={Col} >
 							<Form.Label>Price</Form.Label>
-							<Form.Control name="price" value={price} autoComplete="off" type="text" placeholder="Username" onChange={this.handleChange} />
+							<Form.Control name="price" value={price} autoComplete="off" type="text" placeholder="Price (.000 vnd)" onChange={this.handleChange} />
 						</Form.Group>
 						<Form.Group as={Col} >
 							<Form.Label>Amount</Form.Label>
-							<Form.Control name="amount" value={amount} autoComplete="off" type="text" placeholder="Username" onChange={this.handleChange} />
+							<Form.Control name="amount" value={amount} autoComplete="off" type="text" placeholder="Amount" onChange={this.handleChange} />
 						</Form.Group>
 					</Form.Row>
 					<Button variant="primary" type="submit">
