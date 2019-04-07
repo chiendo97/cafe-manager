@@ -21,10 +21,6 @@ const receiptCol = [
 	},
 ]
 
-const allReceiptCol = [
-
-]
-
 class ReceiptPage extends React.Component {
 	constructor(props) {
 		super(props)
@@ -129,9 +125,11 @@ class ReceiptPage extends React.Component {
 						const { user } = r
 						return (
 							<div key={r._id}>
-								<div>
-									User: {user.firstname} {user.lastname}
-								</div>
+                {user && 
+                  <div>
+                    User: {user.firstname} {user.lastname}
+                  </div>
+                }
 								<ul>
 									{r.list.map(i => {
 										return (
@@ -155,11 +153,11 @@ class ReceiptPage extends React.Component {
 				<ReactTable 
 					data = { list }
 					columns = { receiptCol }
-					defaultPageSize = { 3 }
+					defaultPageSize = { 5 }
 				/>
 				<div>
-					<h5>
-						Total: { list.length ? list.reduce( (acc, curr) => acc + curr.total, 0) : 0 } .000 vnd
+					<h5 style={{ textAlign: 'center' }}>
+						Total: {list.length ? list.reduce((acc, curr) => acc + curr.total, 0) : 0} .000 vnd
 					</h5>
 				</div>
 				<form>

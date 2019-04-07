@@ -4,8 +4,15 @@ const storageService = require('./storage.service.js')
 
 router.post('/addItem', addItem)
 router.get('/getStorage', getStorage)
+router.put('/exportItem', exportItem)
 
 module.exports = router
+
+function exportItem(req, res, next) {
+  storageService.exportItem(req.body)
+    .then(item => item ? res.json(item) : res.status(400).json({ message: 'Can not export item'}))
+    .catch(error => {next(error)})
+}
 
 function getStorage(req, res, next) {
 	storageService.getStorage()

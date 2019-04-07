@@ -19,6 +19,7 @@ app.use('/api/users/', require('./users/user.controller.js'))
 app.use('/api/storage/', require('./storage/storage.controller.js'))
 app.use('/api/menu/', require('./menu/menu.controller.js'))
 app.use('/api/receipt', require('./receipt/receipt.controller.js'))
+app.use('/api/role/', require('./roles/role.controller'))
 
 app.use(express.static('deploy'));
 

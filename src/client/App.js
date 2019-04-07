@@ -11,6 +11,8 @@ import { UserManagerPage } from './components/UserManagerPage.js'
 import { StoragePage } from './components/StoragePage.js'
 import { MenuPage } from './components/MenuPage.js'
 import { ReceiptPage } from './components/ReceiptPage.js'
+import { UserInfoPage } from './components/UserInfoPage'
+import { MenuInfoPage } from './components/MenuInfoPage'
 
 export default class App extends Component {
   render() {
@@ -41,8 +43,10 @@ export default class App extends Component {
 				<Switch>
 					<PrivateRoute exact path = '/' component = { HomePage } />
 					<PrivateRoute exact path = '/usermanager' component = { UserManagerPage } />
-					<PrivateRoute exact path = '/menu' component = { MenuPage } />
-					<PrivateRoute exact path = '/storage' component = { StoragePage } />
+          <PrivateRoute path="/user/:username" component={UserInfoPage} />
+          <PrivateRoute path="/menu/:name" component={MenuInfoPage} />
+          <PrivateRoute exact path = '/menu' component = { MenuPage } />
+          <PrivateRoute exact path = '/storage' component = { StoragePage } />
 					<PrivateRoute exact path = '/receipt' component = { ReceiptPage } />
 					<Route path='/login' component = { LoginPage }/>
 					<Route component = { Page404NotFound }/>

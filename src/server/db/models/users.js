@@ -19,10 +19,10 @@ const userSchema = new Schema({
 		type: String,
 		required: true
 	},
-	role: [{
-		type: String,
-		default: 'user'
-	}],
+	role: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Role'
+	},
 	dataAdded: {
 		type: Date,
 		default: Date.now

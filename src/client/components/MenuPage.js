@@ -3,6 +3,7 @@ import React from 'react'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 import { Form, Col, Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap"
+import { Link } from 'react-router-dom'
 
 import { menuService } from '../_services/menu.service.js'
 
@@ -19,6 +20,11 @@ const columns = [
 		Header: 'Description',
 		accessor: 'desc'
 	},
+  {
+    Header: 'Edit',
+    accessor: 'name',
+    Cell: props => <Link to={`/menu/${props.value}`} >Edit</Link> 
+  },
 ]
 
 class MenuPage extends React.Component {
@@ -53,7 +59,7 @@ class MenuPage extends React.Component {
 
 		const { name, price, desc } = this.state
 
-		if (!(name && price && desc)) {
+		if (!(name && price)) {
 			this.setState({
 				error: 'Invalid input'
 			})
