@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const User = require('./users')
 
 const roleSchema = new Schema({
   role: {
@@ -14,15 +15,11 @@ const Role = mongoose.model('Role', roleSchema)
 
 const defaultRole = (someRole) => {
   if (!someRole) return
-  Role.findOne({role: someRole}, function(err, role) {
+  Role.findOneAndUpdate({role: someRole}, {role: someRole}, { new: true }, function(err, data) {
     if (err) throw err
-
-    if (!role) {
-      const adminRole = new Role({
-        role: someRole
-      })
-      adminRole.save()
-    }
+    User.updateOne({username: someRole}, {username: someRole, password: 't', firstname: someRole, lastname: someRole, role: data._id}, {upsert: true}, function(err, data) {
+      if (err) throw err
+    })
   })
 }
 

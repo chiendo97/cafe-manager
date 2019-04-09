@@ -21,6 +21,7 @@ class StoragePage extends React.Component {
     super(props)
 
     this.state = {
+      user: {},
       items : [],
       name: '',
       amount: '',
@@ -39,6 +40,10 @@ class StoragePage extends React.Component {
 
     storageService.getStorage()
       .then( items => this.setState({ items }) )
+
+    this.setState({
+      user: JSON.parse(localStorage.getItem('user')),
+    })
   }
 
   handleChange(e) {
@@ -117,6 +122,7 @@ class StoragePage extends React.Component {
     const { name, amount } = this.state
     const { exportAmount } = this.state
     const { error } = this.state
+    const { user } = this.state
     return (
       <div>
         <h1>Storage</h1>
@@ -125,55 +131,64 @@ class StoragePage extends React.Component {
           columns = {columns}
           defaultPageSize={5}
         />
-        <h2>Export item</h2>
-        <form onSubmit={this.handleExport}>
-          <Form.Row>
-            <Form.Group as={Col} >
-              <Form.Label>Item</Form.Label>
-              <Form.Control required name="exportItem" as="select" onChange={this.handleSelect}>
-                <option disable='true'> -- select an item -- </option>
-                { 
-                  items.map(i => (
-                    <option value={i.name} key={i.name}>{ i.name }</option>
-                  ))
-                }
-              </Form.Control>
-            </Form.Group>
-            <Form.Group as={Col} >
-              <Form.Label>Amount</Form.Label>
-              <Form.Control required name="exportAmount" value={exportAmount} autoComplete="off" type="text" placeholder="Amount" onChange={this.handleChange} />
-            </Form.Group>
-          </Form.Row>
-          <Button variant="primary" type="submit">
-            Export
-          </Button>
-          <div>
-            {error &&
-              <div> { error } </div>
-            }
-          </div>
-        </form>
-        <h2> Add new item </h2>
-        <form onSubmit={this.handleSubmit}>
-          <Form.Row>
-            <Form.Group as={Col} >
-              <Form.Label>Name</Form.Label>
-              <Form.Control name="name" value={name} autoComplete="off" type="text" placeholder="Name" onChange={this.handleChange} />
-            </Form.Group>
-            <Form.Group as={Col} >
-              <Form.Label>Amount</Form.Label>
-              <Form.Control name="amount" value={amount} autoComplete="off" type="text" placeholder="Amount" onChange={this.handleChange} />
-            </Form.Group>
-          </Form.Row>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-          <div>
-            {error &&
-              <div> { error } </div>
-            }
-          </div>
-        </form>
+        { user.role && (user.role.role === 'admin' || user.role.role === 'manager') && 
+            <div>
+              <h2>Export item</h2>
+              <form onSubmit={this.handleExport}>
+                <Form.Row>
+                  <Form.Group as={Col} >
+                    <Form.Label>Item</Form.Label>
+                    <Form.Control required name="exportItem" as="select" onChange={this.handleSelect}>
+                      <option disable='true'> -- select an item -- </option>
+                      { 
+                        items.map(i => (
+                          <option value={i.name} key={i.name}>{ i.name }</option>
+                        ))
+                      }
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group as={Col} >
+                    <Form.Label>Amount</Form.Label>
+                    <Form.Control required name="exportAmount" value={exportAmount} autoComplete="off" type="text" placeholder="Amount" onChange={this.handleChange} />
+                  </Form.Group>
+                </Form.Row>
+                <Button variant="primary" type="submit">
+                  Export
+                </Button>
+                <div>
+                  {error &&
+                      <div> { error } </div>
+                  }
+                </div>
+              </form>
+            
+            </div>
+        }
+        { user.role && (user.role.role === 'admin') && 
+            <div>
+              <h2> Add new item </h2>
+              <form onSubmit={this.handleSubmit}>
+                <Form.Row>
+                  <Form.Group as={Col} >
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control name="name" value={name} autoComplete="off" type="text" placeholder="Name" onChange={this.handleChange} />
+                  </Form.Group>
+                  <Form.Group as={Col} >
+                    <Form.Label>Amount</Form.Label>
+                    <Form.Control name="amount" value={amount} autoComplete="off" type="text" placeholder="Amount" onChange={this.handleChange} />
+                  </Form.Group>
+                </Form.Row>
+                <Button variant="primary" type="submit">
+                  Submit
+                </Button>
+                <div>
+                  {error &&
+                      <div> { error } </div>
+                  }
+                </div>
+              </form>
+            </div>
+        }
       </div>
     )
   }

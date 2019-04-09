@@ -1,20 +1,19 @@
 const express = require('express')
 const router = express.Router()
 const userService = require('./user.service.js')
+const { authorize } = require('../_helpers/basic-auth')
 
 router.post('/authenticate', authenticate)
-router.get('/getAll', getAll)
-router.post('/addUser', addUser)
-router.get('/getUserByUsername/:username', getUserByUsername)
-router.put('/updateUser', updateUser)
-router.delete('/deleteUser', deleteUser)
+router.get('/getAll', authorize(), getAll)
+router.post('/addUser', authorize('admin'), addUser)
+router.get('/getUserByUsername/:username', authorize(), getUserByUsername)
+router.put('/updateUser', authorize(), updateUser)
+router.delete('/deleteUser', authorize('admin'), deleteUser)
 
 module.exports = router
 
 function deleteUser(req, res, next) {
   const { username } = req.body
-
-  console.log('delete', username)
 
   userService.deleteUser({ username })
     .then(() => res.json())
@@ -23,12 +22,25 @@ function deleteUser(req, res, next) {
 
 function getUserByUsername(req, res, next) {
   const { username } = req.params
+  const currentUser = req.user
+
+  if (username !== currentUser.username && currentUser.role.role !== 'admin') {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
   userService.getUserByUsername({ username })
-		.then(user => user ? res.json(user) : res.status(400).json( { message: 'User not found'} ))
+    .then(user => user ? res.json(user) : res.status(400).json( { message: 'User not found'} ))
     .catch(error => { next(error) })
 }
 
 function updateUser(req, res, next) {
+
+  const { username } = req.body
+  const currentUser = req.user
+  
+  if (username !== currentUser.username && currentUser.role.role !== 'admin') {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
 
   userService.updateUser(req.body)
     .then(user => user ? res.json(user) : res.status(400).json( { message: 'Can not update user'} ))
@@ -36,26 +48,32 @@ function updateUser(req, res, next) {
 }
 
 function authenticate(req, res, next) {
-	userService.authenticate(req.body)
-		.then(user => user ? res.json(user) : res.status(400).json( { message: 'Username and password is incorrect'} ))
-		.catch(error => {
-			next(error)
-		})
+  userService.authenticate(req.body)
+    .then(user => user ? res.json(user) : res.status(400).json( { message: 'Username and password is incorrect'} ))
+    .catch(error => {
+      next(error)
+    })
 }
 
 function getAll(req, res, next) {
-	userService.getAll()
-		.then(users => {
-      //console.log(users)
-			res.json(users)
-		})
-		.catch(error => {
-			next(error)
-		})
+
+  const currentUser = req.user
+
+  if (currentUser.role.role !== 'admin') {
+    userService.getUserByUsername({ username: currentUser.username })
+      .then(user => user ? res.json([user]) : res.status(400).json( { message: 'User not found'} ))
+      .catch(error => { next(error) })
+  } else {
+    userService.getAll()
+      .then(users => {
+        res.json(users)
+      })
+      .catch(error => next(error))
+  }
 }
 
 function addUser(req, res, next) {
-	userService.addUser(req.body)
-		.then(() => res.json())
-		.catch(error => next(error))
+  userService.addUser(req.body)
+    .then(() => res.json())
+    .catch(error => next(error))
 }

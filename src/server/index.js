@@ -4,7 +4,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const path = require('path')
 
-const basicAuth = require('./_helpers/basic-auth')
+//const basicAuth = require('./_helpers/basic-auth')
+const { basicAuth, authorize } = require('./_helpers/basic-auth')
 const errorHandler = require('./_helpers/error-handler')
 
 const db = require('./db/db.js')
@@ -14,6 +15,7 @@ app.use(bodyParser.json())
 app.use(cors())
 
 app.use('/api/', basicAuth)
+//app.use('/api/', authorize())
 
 app.use('/api/users/', require('./users/user.controller.js'))
 app.use('/api/storage/', require('./storage/storage.controller.js'))

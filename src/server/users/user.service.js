@@ -48,7 +48,7 @@ async function updateUser({ username, firstname, lastname}) {
 
 async function getUserByUsername({ username }) {
 
-  return User.findOne({ username }).lean().exec()
+  return User.findOne({ username }).populate('role').lean().exec()
     .then(
       u => {
         if (u) return u

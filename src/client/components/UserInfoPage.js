@@ -10,9 +10,11 @@ class UserInfoPage extends React.Component {
     super(props)
 
     this.state = {
+      user: {},
       id: '',
       firstname: '',
       lastname: '',
+      role: '',
       found: false,
       redirect: false,
     }
@@ -26,6 +28,7 @@ class UserInfoPage extends React.Component {
     e.preventDefault()
 
     const { username } = this.state
+
 
     userService.deleteUser(username)
       .then(() => {
@@ -43,16 +46,9 @@ class UserInfoPage extends React.Component {
     userService.updateUser(username, firstname, lastname)
       .then(
         u => {
-          if (u) {
-            u => {
-              this.setState({
-                username: u.username,
-                firstname: u.firstname,
-                lastname: u.lastname,
-                found: true
-              })
-            }
-          }
+          this.setState({
+            redirect: true
+          })
         }
       )
   }
@@ -70,6 +66,10 @@ class UserInfoPage extends React.Component {
       id: username
     })
 
+    this.setState({
+      user: JSON.parse(localStorage.getItem('user'))
+    })
+
     userService.getUserByUsername(username)
       .then(
         u => {
@@ -77,6 +77,7 @@ class UserInfoPage extends React.Component {
             username: u.username,
             firstname: u.firstname,
             lastname: u.lastname,
+            role: u.role.role,
             found: true
           })
         }
@@ -88,7 +89,8 @@ class UserInfoPage extends React.Component {
       return <Redirect to='/usermanager'/>;
     }
 
-    const { username, firstname, lastname} = this.state
+    const { username, firstname, lastname, role } = this.state
+    const { user } = this.state
 
     return (
       <div>
@@ -110,14 +112,21 @@ class UserInfoPage extends React.Component {
                     <Form.Label>Last name</Form.Label>
                     <Form.Control name="lastname" value={lastname} autoComplete="off" type="text" placeholder="Last name" onChange={this.handleChange} />
                   </Form.Group>
+                  <Form.Group as={Col} controlId="role">
+                    <Form.Label>Role</Form.Label>
+                    <Form.Control disabled name="role" value={role} autoComplete="off" type="text" placeholder="Role" onChange={this.handleChange} />
+                  </Form.Group>
                 </Form.Row>
                 <ButtonToolbar>
                   <Button variant="primary" size="lg" type="submit">
                     Update
                   </Button>
-                  <Button variant="secondary" size="lg" onClick={this.handleDelete}>
-                    Delete
-                  </Button>
+                  {
+                    user.role && user.role.role === 'admin' && 
+                      <Button variant="secondary" size="lg" onClick={this.handleDelete}>
+                        Delete
+                      </Button>
+                  }
                 </ButtonToolbar>
               </form>
             </div>

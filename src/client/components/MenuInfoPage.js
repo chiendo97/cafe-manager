@@ -10,6 +10,7 @@ class MenuInfoPage extends React.Component {
     super(props)
 
     this.state = {
+      user: {},
       id: this.props.match.params.name,
       name: '',
       price: '',
@@ -66,6 +67,10 @@ class MenuInfoPage extends React.Component {
   componentDidMount() {
 
     const { id } = this.state
+
+    this.setState({
+      user: JSON.parse(localStorage.getItem('user'))
+    })
 
     menuService.getMenuByName(id)
       .then(

@@ -1,12 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const menuService = require('./menu.service.js')
+const { authorize } = require('../_helpers/basic-auth')
 
-router.post('/addMenu', addMenu)
-router.get('/getMenu', getMenu)
-router.put('/updateMenu', updateMenu)
-router.delete('/deleteMenu', deleteMenu)
-router.get('/getMenuByName/:name', getMenuByName)
+router.post('/addMenu', authorize('admin', 'manager'), addMenu)
+router.get('/getMenu', authorize(), getMenu)
+router.put('/updateMenu', authorize('admin', 'manager'), updateMenu)
+router.delete('/deleteMenu', authorize('admin', 'manager'), deleteMenu)
+router.get('/getMenuByName/:name', authorize('admin', 'manager'), getMenuByName)
 
 module.exports = router
 

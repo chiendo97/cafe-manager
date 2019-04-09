@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const storageService = require('./storage.service.js')
+const { authorize } = require('../_helpers/basic-auth')
 
-router.post('/addItem', addItem)
-router.get('/getStorage', getStorage)
-router.put('/exportItem', exportItem)
+router.post('/addItem', authorize('admin', 'manager'), addItem)
+router.get('/getStorage', authorize(), getStorage)
+router.put('/exportItem', authorize(['manager', 'admin']), exportItem)
 
 module.exports = router
 

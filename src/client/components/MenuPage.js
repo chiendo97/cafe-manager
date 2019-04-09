@@ -8,18 +8,18 @@ import { Link } from 'react-router-dom'
 import { menuService } from '../_services/menu.service.js'
 
 const columns = [
-	{
-		Header: 'Name',
-		accessor: 'name'
-	},
-	{
-		Header: 'Price (.000 vnd)',
-		accessor: 'price',
-	},
-	{
-		Header: 'Description',
-		accessor: 'desc'
-	},
+  {
+    Header: 'Name',
+    accessor: 'name'
+  },
+  {
+    Header: 'Price (.000 vnd)',
+    accessor: 'price',
+  },
+  {
+    Header: 'Description',
+    accessor: 'desc'
+  },
   {
     Header: 'Edit',
     accessor: 'name',
@@ -28,101 +28,137 @@ const columns = [
 ]
 
 class MenuPage extends React.Component {
-	constructor(props) {
-		super(props)
+  constructor(props) {
+    super(props)
 
-		this.state = {
-			menu : [],
-			name: '',
-			price: '',
-			desc: '',
-			error: ''
-		}
+    this.state = {
+      user: {},
+      menu : [],
+      name: '',
+      price: '',
+      desc: '',
+      error: ''
+    }
 
-		this.handleChange = this.handleChange.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
-	}
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-	componentDidMount() {
+  componentDidMount() {
 
-		menuService.getMenu()
-			.then( menu => this.setState({ menu }) )
-	}
+    menuService.getMenu()
+      .then( menu => this.setState({ menu }) )
 
-	handleChange(e) {
-		const { name, value } = e.target;
-		this.setState({ [name]: value });
-	}
+    this.setState({
+      user: JSON.parse(localStorage.getItem('user')),
+    })
+  }
 
-	handleSubmit(e) {
-		e.preventDefault();
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  }
 
-		const { name, price, desc } = this.state
+  handleSubmit(e) {
+    e.preventDefault();
 
-		if (!(name && price)) {
-			this.setState({
-				error: 'Invalid input'
-			})
-			return
-		}
+    const { name, price, desc } = this.state
 
-		menuService.addMenu(name, price, desc) 
-			.then(
-				() => {
-					menuService.getMenu()
-						.then( menu => this.setState({ menu }) )
+    if (!(name && price)) {
+      this.setState({
+        error: 'Invalid input'
+      })
+      return
+    }
 
-					this.setState({
-						name: '',
-						price: '',
-						desc: ''
-					})
-				},
-				error => this.setState({ error })
-			)
+    menuService.addMenu(name, price, desc) 
+      .then(
+        () => {
+          menuService.getMenu()
+            .then( menu => this.setState({ menu }) )
 
-	}
+          this.setState({
+            name: '',
+            price: '',
+            desc: ''
+          })
+        },
+        error => this.setState({ error })
+      )
 
-	render() {
-		const { menu } = this.state
-		const { name, price, desc } = this.state
-		const { error } = this.state
-		return (
-			<div>
-				<h1>Menu</h1>
-				<ReactTable
-					data = {menu}
-					columns = {columns}
-					defaultPageSize={5}
-				/>
-				<h2> Add new menu </h2>
-				<form onSubmit={this.handleSubmit}>
-					<Form.Row>
-						<Form.Group as={Col} >
-							<Form.Label>Name</Form.Label>
-							<Form.Control name="name" value={name} autoComplete="off" type="text" placeholder="Name" onChange={this.handleChange} />
-						</Form.Group>
-						<Form.Group as={Col} >
-							<Form.Label>Price</Form.Label>
-							<Form.Control name="price" value={price} autoComplete="off" type="text" placeholder="Price (.000 vnd)" onChange={this.handleChange} />
-						</Form.Group>
-						<Form.Group as={Col} >
-							<Form.Label>Description</Form.Label>
-							<Form.Control name="desc" value={desc} autoComplete="off" type="text" placeholder="Description" onChange={this.handleChange} />
-						</Form.Group>
-					</Form.Row>
-					<Button variant="primary" type="submit">
-						Submit
-					</Button>
-					<div>
-						{error &&
-								<div> { error } </div>
-						}
-					</div>
-				</form>
-			</div>
-		)
-	}
+  }
+
+  render() {
+    const { menu } = this.state
+    const { name, price, desc } = this.state
+    const { error } = this.state
+    const { user } = this.state
+    return (
+      <div>
+        <h1>Menu</h1>
+        { (user.role && user.role.role === 'admin') ? 
+            <ReactTable
+              data = {menu}
+              columns = {columns}
+              defaultPageSize={5}
+            />
+            :
+            <ReactTable
+              data = {menu}
+              columns = {
+                [
+                  {
+                    Header: 'Name',
+                    accessor: 'name'
+                  },
+                  {
+                    Header: 'Price (.000 vnd)',
+                    accessor: 'price',
+                  },
+                  {
+                    Header: 'Description',
+                    accessor: 'desc'
+                  }
+                ]
+              }
+              defaultPageSize={5}
+            />
+
+        }
+        { 
+          user && user.role && user.role.role === 'admin' && 
+            <div>
+              <h2> Add new menu </h2>
+              <form onSubmit={this.handleSubmit}>
+                <Form.Row>
+                  <Form.Group as={Col} >
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control name="name" value={name} autoComplete="off" type="text" placeholder="Name" onChange={this.handleChange} />
+                  </Form.Group>
+                  <Form.Group as={Col} >
+                    <Form.Label>Price</Form.Label>
+                    <Form.Control name="price" value={price} autoComplete="off" type="text" placeholder="Price (.000 vnd)" onChange={this.handleChange} />
+                  </Form.Group>
+                  <Form.Group as={Col} >
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control name="desc" value={desc} autoComplete="off" type="text" placeholder="Description" onChange={this.handleChange} />
+                  </Form.Group>
+                </Form.Row>
+                <Button variant="primary" type="submit">
+                  Submit
+                </Button>
+                <div>
+                  {error &&
+                      <div> { error } </div>
+                  }
+                </div>
+              </form>
+            
+            </div>
+        }
+      </div>
+    )
+  }
 }
 
 export { MenuPage }
