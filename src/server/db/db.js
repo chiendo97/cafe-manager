@@ -13,5 +13,8 @@ const con = mongoose.connect(database_url, {
 	if (err) throw err
 })
 
+//const Promise = require('blue')
+//mongoose.Promise = Promise
+
 module.exports = con
 

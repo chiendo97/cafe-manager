@@ -24,7 +24,7 @@ function getUserByUsername(req, res, next) {
   const { username } = req.params
   const currentUser = req.user
 
-  if (username !== currentUser.username && currentUser.role.role !== 'admin') {
+  if (username !== currentUser.username && currentUser.role !== 'admin') {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
@@ -38,7 +38,7 @@ function updateUser(req, res, next) {
   const { username } = req.body
   const currentUser = req.user
   
-  if (username !== currentUser.username && currentUser.role.role !== 'admin') {
+  if (username !== currentUser.username && currentUser.role !== 'admin') {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
@@ -59,7 +59,7 @@ function getAll(req, res, next) {
 
   const currentUser = req.user
 
-  if (currentUser.role.role !== 'admin') {
+  if (currentUser.role !== 'admin') {
     userService.getUserByUsername({ username: currentUser.username })
       .then(user => user ? res.json([user]) : res.status(400).json( { message: 'User not found'} ))
       .catch(error => { next(error) })

@@ -16,7 +16,7 @@ async function authenticate({ username, password }) {
     .then(
       user => {
         if (user) {
-          const { password, ...userWithoutPassword } = user
+          const userWithoutPassword = {...user, password: '', role: user.role.role}
           return userWithoutPassword
         }
       }
@@ -29,6 +29,7 @@ async function deleteUser({ username }) {
 
 async function updateUser({ username, firstname, lastname}) {
 
+  console.log(username)
   return User.findOneAndUpdate({ 
     username, 
   }, {
@@ -61,17 +62,25 @@ async function getAll() {
   return User.find({}).populate('role').lean().exec()
     .then(
       users => users.map( u => {
-          const { password, ...userWithoutPassword } = u
-          return userWithoutPassword
-        })
+        //const { password, ...userWithoutPassword } = u
+        const userWithoutPassword = {
+          username: u.username,
+          firstname: u.firstname,
+          lastname: u.lastname,
+          role: u.role.role,
+          description: 'Elliot is a sound engineer living in Nashville who enjoys playing guitar and hanging with his cat.'
+        }
+
+        return userWithoutPassword
+      })
     )
 }
 
-async function addUser( {username, password, firstName, lastName, role }) {
+async function addUser( {username, password, firstname, lastname, role }) {
   return Role.findOne({role}).exec().then(
     roleModel => {
       if (!roleModel) throw 'Role not found: ' + role
-      const user = new User({ username, password, firstname: firstName, lastname: lastName, role: roleModel._id })
+      const user = new User({ username, password, firstname, lastname, role: roleModel._id })
       return user.save()
     }
   )

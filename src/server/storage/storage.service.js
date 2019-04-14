@@ -1,8 +1,8 @@
 const Storage = require('../db/models/storage.js')
 
 module.exports = {
-	getStorage,
-	addItem,
+  getStorage,
+  addItem,
   exportItem,
 }
 
@@ -23,12 +23,13 @@ async function exportItem({ name, amount }) {
 
 async function getStorage() {
 
-	return Storage.find({}, (err, items) => {
-		if (err) {
-			throw err
-		}
-		return items;
-	})
+  return Storage.find({}, (err, items) => {
+    if (err) {
+      throw err
+    }
+    console.log(items)
+    return items;
+  })
 }
 
 async function addItem({ name, amount }) {
@@ -44,10 +45,7 @@ async function addItem({ name, amount }) {
 
           return item.save()
         }
-
-        console.log(i)
         i.amount += parseInt(amount)
-
         return i.save()
       }
     )

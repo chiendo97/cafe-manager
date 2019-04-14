@@ -16,13 +16,13 @@ function exportItem(req, res, next) {
 }
 
 function getStorage(req, res, next) {
-	storageService.getStorage()
-		.then(items => res.json(items))
-		.catch(error => next(error))
+  storageService.getStorage()
+    .then(items => res.json(items))
+    .catch(error => next(error))
 }
 
 function addItem(req, res, next) {
-	storageService.addItem(req.body)
-		.then( () => res.json() )
-		.catch(error => next(error))
+  storageService.addItem(req.body)
+    .then( () => res.json() )
+    .catch(error => next(error))
 }

@@ -23,6 +23,7 @@ function deleteUser(username) {
 }
 
 function updateUser(username, firstname, lastname) {
+
   const requestOptions = {
     method: 'PUT',
     headers: postHeader(),
@@ -34,6 +35,7 @@ function updateUser(username, firstname, lastname) {
 }
 
 function getUserByUsername(username) {
+
   const requestOptions = {
     method: 'GET',
     headers: authHeader()
@@ -42,12 +44,12 @@ function getUserByUsername(username) {
   return fetch('/api/users/getUserByUsername/' + username, requestOptions).then(handleResponse)
 }
 
-function addUser(username, password, firstName, lastName, role) {
+function addUser(username, password, firstname, lastname, role) {
 
   const requestOptions = {
     method: 'POST',
     headers: postHeader(),
-    body: JSON.stringify({ username, password, firstName, lastName, role })
+    body: JSON.stringify({ username, password, firstname, lastname, role })
   };
 
   return fetch('/api/users/addUser', requestOptions)
@@ -66,17 +68,17 @@ function login(username, password) {
   return fetch('/api/users/authenticate', requestOptions)
     .then(handleResponse)
     .then(
-        user => {
-          // login successful if there's a user in the response
-          if (user) {
-            // store user details and basic auth credentials in local storage 
-            // to keep user logged in between page refreshes
-            user.authdata = window.btoa(username + ':' + password);
-            localStorage.setItem('user', JSON.stringify(user));
-          }
+      user => {
+        // login successful if there's a user in the response
+        if (user) {
+          // store user details and basic auth credentials in local storage 
+          // to keep user logged in between page refreshes
+          user.authdata = window.btoa(username + ':' + password);
+          localStorage.setItem('user', JSON.stringify(user));
+        }
 
-          return user;
-        },
+        return user;
+      },
     )
 }
 

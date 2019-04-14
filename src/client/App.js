@@ -1,65 +1,56 @@
 import React, { Component } from 'react';
-import { Switch, Link, Route } from 'react-router-dom'
-import { Button, Breadcrumb, Nav, Alert } from 'react-bootstrap'
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Container, Divider } from 'semantic-ui-react'
+import { Switch, Route } from 'react-router-dom'
 
-import { PrivateRoute } from './_components/PrivateRoute.js'
-import { LoginPage } from './components/LoginPage.js'
-import { HomePage } from './components/HomePage.js'
-import { UserManagerPage } from './components/UserManagerPage.js'
-import { StoragePage } from './components/StoragePage.js'
-import { MenuPage } from './components/MenuPage.js'
-import { ReceiptPage } from './components/ReceiptPage.js'
-import { UserInfoPage } from './components/UserInfoPage'
-import { MenuInfoPage } from './components/MenuInfoPage'
+import { PrivateRoute } from './_components/PrivateRoute'
+import MenuBar from './components/menu/MenuBar'
+import LoginForm from './components/login/LoginForm.js'
+import UsersPage from './components/users/UsersPage'
+import MenuPage from './components/menu/MenuPage'
+import StoragePage from './components/storage/StoragePage'
+import ReceiptPage from './components/receipt/ReceiptPage'
+import HomePage from './components/home/HomePage'
 
-export default class App extends Component {
+class App extends Component {
+
+  constructor(props) {
+
+    super(props)
+
+    this.state = {
+      user: {}
+    }
+  }
+
+  componentDidMount = () => {
+
+    this.setState({
+      user: JSON.parse(localStorage.getItem('user'))
+    })
+
+    this.setState({
+      user: {
+        role: 'admin'
+      }
+    })
+  }
   render() {
     return (
-			<div>
-				<Nav
-					activeKey="/home"
-				>
-					<Nav.Item>
-						<Nav.Link href="/">Home</Nav.Link>
-					</Nav.Item>
-					<Nav.Item>
-						<Nav.Link href="/usermanager">Users Manager</Nav.Link>
-					</Nav.Item>
-					<Nav.Item>
-						<Nav.Link href="/receipt">Receipt</Nav.Link>
-					</Nav.Item>
-					<Nav.Item>
-						<Nav.Link href="/menu">Menu</Nav.Link>
-					</Nav.Item>
-					<Nav.Item>
-						<Nav.Link href="/storage">Storage</Nav.Link>
-					</Nav.Item>
-					<Nav.Item>
-						<Nav.Link href="/login">Login/Logout</Nav.Link>
-					</Nav.Item>
-				</Nav>
-				<Switch>
-					<PrivateRoute exact path = '/' component = { HomePage } />
-					<PrivateRoute exact path = '/usermanager' component = { UserManagerPage } />
-          <PrivateRoute path="/user/:username" component={UserInfoPage} />
-          <PrivateRoute path="/menu/:name" component={MenuInfoPage} />
+      <div>
+        <MenuBar fixed='top' inverted></MenuBar>
+        <Divider/>
+        <Container style={{ marginTop: '3em' }}>
+          <PrivateRoute exact path = '/' component = { HomePage } />
+          <PrivateRoute exact path = '/users' component = { UsersPage } />
           <PrivateRoute exact path = '/menu' component = { MenuPage } />
           <PrivateRoute exact path = '/storage' component = { StoragePage } />
-					<PrivateRoute exact path = '/receipt' component = { ReceiptPage } />
-					<Route path='/login' component = { LoginPage }/>
-					<Route component = { Page404NotFound }/>
-				</Switch>
-			</div>
+          <PrivateRoute exact path = '/receipt' component = { ReceiptPage } />
+          <Route path='/login' component = { LoginForm }/>
+        </Container>
+      </div>
     );
   }
 }
 
-const Page404NotFound = ( {location} ) => {
-	return (
-		<div>
-			<h3> No match for <code>{location.pathname}</code> </h3>
-		</div>
-	)
-}
+export default App;

@@ -35,10 +35,11 @@ function authorize(roles = []) {
     req.user = user
 
     console.log(req.path)
-    //console.log('roles: ', roles)
-    //console.log('user role: ', user.role)
 
-    if (roles.length && user.role && !roles.includes(user.role.role)) {
+    if (roles.length && user.role && !roles.includes(user.role)) {
+      console.log('fails')
+      console.log('roles: ', roles)
+      console.log('user role: ', user.role)
       return res.status(401).json({ message: 'Unauthorized'})
     }
 

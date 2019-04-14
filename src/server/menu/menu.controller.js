@@ -31,13 +31,13 @@ function updateMenu(req, res, next) {
 }
 
 function getMenu(req, res, next) {
-	menuService.getMenu()
-		.then(items => res.json(items))
-		.catch(error => next(error))
+  menuService.getMenu()
+    .then(items => res.json(items))
+    .catch(error => next(error))
 }
 
 function addMenu(req, res, next) {
-	menuService.addMenu(req.body)
-		.then( () => res.json() )
-		.catch(error => next(error))
+  menuService.addMenu(req.body)
+    .then( () => res.json() )
+    .catch(error => next(error))
 }
