@@ -5,7 +5,7 @@ const path = require('path')
 const menuService = require('./menu.service.js')
 const { authorize } = require('../_helpers/basic-auth')
 const upload = require('../_helpers/upload')
-const Resize = require('../_helpers/Resize')
+const Resize = require('../_helpers/resize')
 
 router.post('/upload', upload.single('image'), async (req, res) => {
 
