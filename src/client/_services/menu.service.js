@@ -12,7 +12,7 @@ export const menuService = {
 function getMenuByName(name) {
 
   const requestOptions = {
-    method : 'GET',
+    method: 'GET',
     headers: authHeader()
   }
 
@@ -47,7 +47,7 @@ function updateMenu(name, price, desc) {
 function getMenu() {
 
   const requestOptions = {
-    method : 'GET',
+    method: 'GET',
     headers: authHeader()
   }
 
@@ -55,14 +55,17 @@ function getMenu() {
 
 }
 
-function addMenu(name, price, desc) {
+function addMenu(name, price, desc, image) {
 
-  const requestOptions = {
+  const formData = new FormData()
+
+  formData.append('image', image)
+  formData.append('body', JSON.stringify({ name, price, desc }))
+
+  return fetch('/api/menu/addMenu', {
     method: 'POST',
-    headers: postHeader(),
-    body: JSON.stringify({ name, price, desc })
-  }
-
-  return fetch('/api/menu/addMenu', requestOptions)
+    headers: authHeader(),
+    body: formData
+  })
     .then(handleResponse)
 }

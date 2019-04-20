@@ -4,6 +4,8 @@ import { Card } from 'semantic-ui-react'
 import { Button, Modal } from 'semantic-ui-react'
 import { Form } from 'semantic-ui-react'
 import { TextArea } from 'semantic-ui-react'
+import { Image } from 'semantic-ui-react'
+import { Header } from 'semantic-ui-react'
 
 import ConfirmModal from '../_buttons/ConfirmModal'
 
@@ -70,15 +72,16 @@ class UserCards extends React.Component {
     const { user } = this.state
 
     return (
-      <Modal 
+      <Modal
         trigger={
           <Card
             onClick={this.handleOpen}
           >
             <Card.Content>
-              <Card.Header>{firstname} {lastname}</Card.Header>
-              <Card.Meta>
-                <span className='date'>{role}</span>
+              <Image floated='right' size='mini' src='https://react.semantic-ui.com/images/avatar/large/daniel.jpg' />
+              <Card.Header textAlign='center'>{role.toUpperCase()}</Card.Header>
+              <Card.Meta textAlign='center'>
+                {firstname + ' ' + lastname}
               </Card.Meta>
               <Card.Description>{description}</Card.Description>
             </Card.Content>
@@ -115,8 +118,8 @@ class UserCards extends React.Component {
               <Form.Field name='description' onChange={this.handleChange} readOnly={!(user && user.role === 'admin')} control={TextArea} value={description} label='Description' placeholder='' />
               <Button disabled={!(user && user.role === 'admin')} primary type='submit' onClick={this.handleUpdate}>Update</Button>
               {
-                user && user.role === 'admin' && 
-                  <ConfirmModal onConfirm={this.handleDelete}>Delete</ConfirmModal>
+                user && user.role === 'admin' &&
+                <ConfirmModal onConfirm={this.handleDelete}>Delete</ConfirmModal>
               }
               <Button positive type='submit' onClick={this.handleClose}>Cancel</Button>
             </Form>

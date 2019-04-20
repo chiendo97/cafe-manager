@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 
 const menu = new Schema({
   name: {
-    type: String, 
+    type: String,
     require: true,
     unique: true,
     required: true
@@ -16,6 +16,9 @@ const menu = new Schema({
   desc: {
     type: String,
     required: true
+  },
+  image: {
+    type: String
   }
 })
 

@@ -3,6 +3,7 @@ import React from 'react'
 import { Card } from 'semantic-ui-react'
 import { Button, Modal } from 'semantic-ui-react'
 import { Form } from 'semantic-ui-react'
+import { Input } from 'semantic-ui-react'
 
 class StorageCard extends React.Component {
 
@@ -15,7 +16,8 @@ class StorageCard extends React.Component {
       user: JSON.parse(localStorage.getItem('user')),
       name: item.name,
       amount: item.amount,
-      exportAmount: 0,
+      exportAmount: '',
+      importAmount: '',
       modalOpen: false
     }
 
@@ -63,7 +65,7 @@ class StorageCard extends React.Component {
 
   render() {
 
-    const { name, amount, exportAmount } = this.state
+    const { name, amount, exportAmount, importAmount } = this.state
     const { user } = this.state
 
     return (
@@ -88,22 +90,36 @@ class StorageCard extends React.Component {
         <Modal.Content image>
           <Modal.Description>
             <Form>
+              <Form.Group widths='equal'>
+                <Form.Field 
+                  control={Input} 
+                  label='Name' 
+                  placeholder='Name' 
+                  readOnly
+                  value={name}
+                />
+                <Form.Field 
+                  control={Input} 
+                  label='Amount' 
+                  placeholder='Amount' 
+                  readOnly
+                  value={amount}
+                />
+              </Form.Group>
               <Form.Group inline>
-                <Form.Field>
-                  <label>Name</label>
-                  <input readOnly value={name} placeholder='Role' />
-                </Form.Field>
-                <Form.Field>
-                  <label>Amount</label>
-                  <input readOnly value={amount} placeholder='Last Name' />
-                </Form.Field>
                 <Form.Field>
                   <label>Export</label>
                   <input name='exportAmount' onChange={this.handleChange} value={exportAmount} placeholder='Export amount' />
                 </Form.Field>
+                <Button disabled={!(user && user.role === 'admin')} primary type='submit' onClick={this.handleExport}>Export</Button>
               </Form.Group>
-              <Button disabled={!(user && user.role === 'admin')} primary type='submit' onClick={this.handleExport}>Export</Button>
-              <Button positive type='submit' onClick={this.handleClose}>Cancel</Button>
+              <Form.Group inline>
+                <Form.Field>
+                  <label>Import</label>
+                  <input disabled name='importAmount' onChange={this.handleChange} value={importAmount} placeholder='Import amount' />
+                </Form.Field>
+                <Button disabled positive type='submit' onClick={this.handleExport}>Import</Button>
+              </Form.Group>
             </Form>
           </Modal.Description>
         </Modal.Content>

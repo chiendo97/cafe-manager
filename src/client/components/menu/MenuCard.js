@@ -6,6 +6,7 @@ import { Button, Modal } from 'semantic-ui-react'
 import { Form } from 'semantic-ui-react'
 import { TextArea } from 'semantic-ui-react'
 import { Label } from 'semantic-ui-react'
+import { Image } from 'semantic-ui-react'
 
 class MenuCard extends React.Component {
 
@@ -18,9 +19,11 @@ class MenuCard extends React.Component {
       name: menu.name,
       price: menu.price,
       description: menu.desc,
+      image: menu.image,
       modalOpen: false
     }
   }
+
 
 
   handleChange = (e) => {
@@ -67,15 +70,23 @@ class MenuCard extends React.Component {
 
   render() {
 
-    const { name, price, description } = this.state
+    const { name, price, description, image } = this.state
     const { user } = this.props
 
+    console.log(image)
+
     return (
-      <Modal 
+      <Modal
         trigger={
           <Card
             onClick={this.handleOpen}
           >
+            {
+              image ?
+                <Image src={'http://localhost:4000/images/' + image} style={{ 'width': '100%', 'height': 'auto' }} avatar />
+                :
+                <Image src='images/default.jpg' style={{ 'width': '100%', 'height': 'auto' }} avatar />
+            }
             <Card.Content>
               <Card.Header>
                 <span>{name}</span>
@@ -102,14 +113,14 @@ class MenuCard extends React.Component {
                 </Form.Field>
                 <Form.Field>
                   <label>Price</label>
-                  <input name='price' onChange={this.handleChange}  readOnly={!(user && user.role === 'admin')} value={price} placeholder='Price' />
+                  <input name='price' onChange={this.handleChange} readOnly={!(user && user.role === 'admin')} value={price} placeholder='Price' />
                 </Form.Field>
               </Form.Group>
               <Form.Field name='description' onChange={this.handleChange} readOnly={!(user && user.role === 'admin')} control={TextArea} value={description} label='Description' placeholder='' />
               <Button disabled={!(user && user.role === 'admin')} primary type='submit' onClick={this.handleUpdate}>Update</Button>
               {
-                user && user.role === 'admin' && 
-                  <ConfirmModal onConfirm={this.handleDelete}>Delete</ConfirmModal>
+                user && user.role === 'admin' &&
+                <ConfirmModal onConfirm={this.handleDelete}>Delete</ConfirmModal>
               }
               <Button positive type='submit' onClick={this.handleClose}>Cancel</Button>
             </Form>

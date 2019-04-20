@@ -39,12 +39,20 @@ class AddUserModal extends React.Component {
     const { username, password, firstname, lastname, role, description } = this.state
 
     return (
-      <Modal 
+      <Modal
         trigger={
           <Card
             onClick={this.handleOpen}
           >
-            <Icon color='black' name='add circle' fitted={true} size='massive'></Icon>
+            <Icon
+              style={{
+                'margin': '0',
+                'position': 'absolute',
+                'top': '50%',
+                'left': '50%',
+                'transform': 'translate(-50%, -50%)',
+              }}
+              color='black' name='add circle' size='massive'></Icon>
           </Card>
         }
         open={this.state.modalOpen}
@@ -56,12 +64,12 @@ class AddUserModal extends React.Component {
           <Modal.Description>
             <Form>
               <Form.Group widths='equal'>
-                <Form.Field autoComplete="false" control={Input} value={username} label='Username' placeholder='Username' name='username' onChange={this.handleChange}/>
-                <Form.Field control={Input} type='password' value={password} label='Password' placeholder='Password' name='password' onChange={this.handleChange}/>
+                <Form.Field autoComplete="false" control={Input} value={username} label='Username' placeholder='Username' name='username' onChange={this.handleChange} />
+                <Form.Field control={Input} type='password' value={password} label='Password' placeholder='Password' name='password' onChange={this.handleChange} />
               </Form.Group>
               <Form.Group widths='equal'>
-                <Form.Field control={Input} value={firstname} label='First name' placeholder='First name' name='firstname' onChange={this.handleChange}/>
-                <Form.Field control={Input} value={lastname} label='Last name' placeholder='Last name' name='lastname' onChange={this.handleChange}/>
+                <Form.Field control={Input} value={firstname} label='First name' placeholder='First name' name='firstname' onChange={this.handleChange} />
+                <Form.Field control={Input} value={lastname} label='Last name' placeholder='Last name' name='lastname' onChange={this.handleChange} />
               </Form.Group>
               <Form.Group inline>
                 <label>Role</label>

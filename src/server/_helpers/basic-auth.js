@@ -37,9 +37,7 @@ function authorize(roles = []) {
     console.log(req.path)
 
     if (roles.length && user.role && !roles.includes(user.role)) {
-      console.log('fails')
-      console.log('roles: ', roles)
-      console.log('user role: ', user.role)
+      console.log('fail with ' + user.role + ' ' + roles)
       return res.status(401).json({ message: 'Unauthorized'})
     }
 
@@ -53,6 +51,7 @@ async function basicAuth(req, res, next) {
   }
 
   if (!req.headers.authorization || req.headers.authorization.indexOf('Basic ') === -1) {
+    console.log('missing authorization headers')
     return res.status(401).json({ message: 'Missing Authorization Header' })
   }
 

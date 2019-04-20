@@ -1,7 +1,13 @@
 import { authHeader, postHeader } from '../_helpers/auth-header.js';
 import handleResponse from '../_helpers/handle-response.js'
 
+import { BehaviorSubject } from 'rxjs'
+
+const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('user')))
+
 export const userService = {
+  currentUser: currentUserSubject.asObservable(),
+  currentUserValue,
   login,
   logout,
   getAll,
@@ -10,6 +16,10 @@ export const userService = {
   updateUser,
   deleteUser,
 };
+
+function currentUserValue() {
+  return currentUserSubject.value
+}
 
 function deleteUser(username) {
 
@@ -75,6 +85,8 @@ function login(username, password) {
           // to keep user logged in between page refreshes
           user.authdata = window.btoa(username + ':' + password);
           localStorage.setItem('user', JSON.stringify(user));
+
+          currentUserSubject.next(user)
         }
 
         return user;
@@ -94,4 +106,5 @@ function getAll() {
 
 function logout() {
   localStorage.removeItem('user');
+  currentUserSubject.next(null)
 }

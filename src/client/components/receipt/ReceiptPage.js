@@ -23,7 +23,6 @@ class ReceiptPage extends React.Component{
 
     menuService.getMenu().then(menu => this.setState({menu}))
     receiptService.getReceipt().then(receipt => {
-      console.log(receipt)
       this.setState({receipt})
     })
   }

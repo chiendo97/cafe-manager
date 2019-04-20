@@ -4,7 +4,7 @@ const userService = require('./user.service.js')
 const { authorize } = require('../_helpers/basic-auth')
 
 router.post('/authenticate', authenticate)
-router.get('/getAll', authorize(), getAll)
+router.get('/getAll', authorize('admin'), getAll)
 router.post('/addUser', authorize('admin'), addUser)
 router.get('/getUserByUsername/:username', authorize(), getUserByUsername)
 router.put('/updateUser', authorize(), updateUser)
@@ -57,19 +57,13 @@ function authenticate(req, res, next) {
 
 function getAll(req, res, next) {
 
-  const currentUser = req.user
+  console.log(req.user)
 
-  if (currentUser.role !== 'admin') {
-    userService.getUserByUsername({ username: currentUser.username })
-      .then(user => user ? res.json([user]) : res.status(400).json( { message: 'User not found'} ))
-      .catch(error => { next(error) })
-  } else {
-    userService.getAll()
-      .then(users => {
-        res.json(users)
-      })
-      .catch(error => next(error))
-  }
+  userService.getAll()
+    .then(users => {
+      res.json(users)
+    })
+    .catch(error => next(error))
 }
 
 function addUser(req, res, next) {

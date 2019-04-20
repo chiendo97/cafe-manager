@@ -7,14 +7,10 @@ const Role = require('./models/role')
 const database_url = process.env.MONGODB_URI || 'mongodb://localhost/cafe_manager'
 
 const con = mongoose.connect(database_url, {
-	useNewUrlParser: true,
-	useCreateIndex: true
+  useNewUrlParser: true,
+  useCreateIndex: true
 }, (err) => {
-	if (err) throw err
+  if (err) throw err
 })
 
-//const Promise = require('blue')
-//mongoose.Promise = Promise
-
 module.exports = con
-
