@@ -23,8 +23,8 @@ app.use('/api/menu/', require('./menu/menu.controller.js'))
 app.use('/api/receipt', require('./receipt/receipt.controller.js'))
 app.use('/api/role/', require('./roles/role.controller'))
 
-app.use(express.static('deploy'));
-app.use('/', express.static(path.join(__dirname, 'public')));
+app.use(express.static('deploy'))
+app.use('/', express.static(path.join(__dirname, 'public')))
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../../deploy/index.html'))

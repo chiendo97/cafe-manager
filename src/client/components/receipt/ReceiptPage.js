@@ -1,5 +1,8 @@
 import React from 'react'
 import { Card } from 'semantic-ui-react'
+import { Tab } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
+import { Header } from 'semantic-ui-react'
 
 import ReceiptCard from './ReceiptCard'
 import AddReceiptModal from './AddReceiptModal'
@@ -7,7 +10,7 @@ import AddReceiptModal from './AddReceiptModal'
 import { menuService } from '../../_services/menu.service'
 import { receiptService } from '../../_services/receipt.service'
 
-class ReceiptPage extends React.Component{
+class ReceiptPage extends React.Component {
 
   constructor(props) {
     super(props)
@@ -15,15 +18,15 @@ class ReceiptPage extends React.Component{
     this.state = {
       user: JSON.parse(localStorage.getItem('user')),
       menu: [],
-      receipt : []
+      receipt: []
     }
   }
 
   componentDidMount = () => {
 
-    menuService.getMenu().then(menu => this.setState({menu}))
+    menuService.getMenu().then(menu => this.setState({ menu }))
     receiptService.getReceipt().then(receipt => {
-      this.setState({receipt})
+      this.setState({ receipt })
     })
   }
 
@@ -32,7 +35,7 @@ class ReceiptPage extends React.Component{
     const { user } = this.state
     return receiptService.addReceipt(user.username, list).then(receipt => {
       receiptService.getReceipt().then(receipt => {
-        this.setState({receipt})
+        this.setState({ receipt })
       })
     })
   }
@@ -44,12 +47,20 @@ class ReceiptPage extends React.Component{
 
     return (
       <div>
-        <Card.Group itemsPerRow={4}>
+        <Tab panes={[
           {
-            receipt.map(r => <ReceiptCard key={r._id} receipt={r} />)
-          }
-          <AddReceiptModal menu={menu} handleAddReceipt={this.handleAddReceipt}></AddReceiptModal>
-        </Card.Group>
+            menuItem: 'Day', render: () => <Tab.Pane>
+              <Card.Group itemsPerRow={4}>
+                {
+                  receipt.map(r => <ReceiptCard key={r._id} receipt={r} />)
+                }
+                <AddReceiptModal menu={menu} handleAddReceipt={this.handleAddReceipt}></AddReceiptModal>
+              </Card.Group>
+            </Tab.Pane>
+          },
+          { menuItem: 'Month', render: () => <Tab.Pane>Tab 2 Content</Tab.Pane> },
+          { menuItem: 'Year', render: () => <Tab.Pane>Tab 3 Content</Tab.Pane> },
+        ]} />
       </div>
     )
   }

@@ -83,7 +83,7 @@ class MenuCard extends React.Component {
           >
             {
               image ?
-                <Image src={'images/' + image} style={{ 'width': '100%', 'height': 'auto' }} avatar />
+                <Image src={'images/' + image} style={{ 'width': '100%', 'height': 'auto', 'display': 'block' }} avatar />
                 :
                 <Image src='images/default.jpg' style={{ 'width': '100%', 'height': 'auto' }} avatar />
             }

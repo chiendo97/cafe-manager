@@ -16,8 +16,12 @@ class Resize {
 
     await sharp(buffer)
       .resize(300, 300, {
-        fit: sharp.fit.inside,
-        withoutEnlargement: true
+        fit: sharp.fit.contain,
+        background: {
+          r: 255,
+          g: 255,
+          b: 255,
+        }
       })
       .toFile(filepath)
 
