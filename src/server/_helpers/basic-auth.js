@@ -7,29 +7,35 @@ module.exports = {
 }
 
 function authorize(roles = []) {
-  // roles param can be a single role string (e.g. Role.User or 'User') 
+  // roles param can be a single role string (e.g. Role.User or 'User')
   // or an array of roles (e.g. [Role.Admin, Role.User] or ['Admin', 'User'])
   if (typeof roles === 'string') {
-    roles = [roles];
+    roles = [roles]
   }
-
 
   return async (req, res, next) => {
     if (req.path === '/users/authenticate') {
       return next()
     }
 
-    if (!req.headers.authorization || req.headers.authorization.indexOf('Basic ') === -1) {
+    if (
+      !req.headers.authorization ||
+      req.headers.authorization.indexOf('Basic ') === -1
+    ) {
       return res.status(401).json({ message: 'Missing Authorization Header' })
     }
 
     const base64Credentials = req.headers.authorization.split(' ')[1]
-    const credentials = Buffer.from(base64Credentials, 'base64').toString('ascii')
+    const credentials = Buffer.from(base64Credentials, 'base64').toString(
+      'ascii'
+    )
     const [username, password] = credentials.split(':')
     const user = await userService.authenticate({ username, password })
 
     if (!user) {
-      return res.status(401).json({ message: 'Invalid Authorization Credentials' })
+      return res
+        .status(401)
+        .json({ message: 'Invalid Authorization Credentials' })
     }
 
     req.user = user
@@ -38,7 +44,7 @@ function authorize(roles = []) {
 
     if (roles.length && user.role && !roles.includes(user.role)) {
       console.log('fail with ' + user.role + ' ' + roles)
-      return res.status(401).json({ message: 'Unauthorized'})
+      return res.status(401).json({ message: 'Unauthorized' })
     }
 
     next()
@@ -50,7 +56,10 @@ async function basicAuth(req, res, next) {
     return next()
   }
 
-  if (!req.headers.authorization || req.headers.authorization.indexOf('Basic ') === -1) {
+  if (
+    !req.headers.authorization ||
+    req.headers.authorization.indexOf('Basic ') === -1
+  ) {
     console.log('missing authorization headers')
     return res.status(401).json({ message: 'Missing Authorization Header' })
   }
@@ -61,7 +70,9 @@ async function basicAuth(req, res, next) {
   const user = await userService.authenticate({ username, password })
 
   if (!user) {
-    return res.status(401).json({ message: 'Invalid Authorization Credentials' })
+    return res
+      .status(401)
+      .json({ message: 'Invalid Authorization Credentials' })
   }
 
   req.user = user

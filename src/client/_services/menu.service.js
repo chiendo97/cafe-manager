@@ -9,54 +9,47 @@ export const menuService = {
   getMenuByName
 }
 
-function getMenuByName(name) {
-
+async function getMenuByName(name) {
   const requestOptions = {
     method: 'GET',
     headers: authHeader()
   }
 
-  return fetch('/api/menu/getMenuByName/' + name, requestOptions)
-    .then(handleResponse)
+  return fetch('/api/menu/getMenuByName/' + name, requestOptions).then(
+    handleResponse
+  )
 }
 
-function deleteMenu(name) {
-
+async function deleteMenu(name) {
   const requestOptions = {
     method: 'DELETE',
     headers: postHeader(),
     body: JSON.stringify({ name })
   }
 
-  return fetch('/api/menu/deleteMenu', requestOptions)
-    .then(handleResponse)
+  return fetch('/api/menu/deleteMenu', requestOptions).then(handleResponse)
 }
 
-function updateMenu(name, price, desc) {
-
+async function updateMenu(name, price, desc) {
   const requestOptions = {
     method: 'PUT',
     headers: postHeader(),
     body: JSON.stringify({ name, price, desc })
   }
 
-  return fetch('/api/menu/updateMenu', requestOptions)
-    .then(handleResponse)
+  return fetch('/api/menu/updateMenu', requestOptions).then(handleResponse)
 }
 
-function getMenu() {
-
+async function getMenu() {
   const requestOptions = {
     method: 'GET',
     headers: authHeader()
   }
 
   return fetch('/api/menu/getMenu', requestOptions).then(handleResponse)
-
 }
 
-function addMenu(name, price, desc, image) {
-
+async function addMenu(name, price, desc, image) {
   const formData = new FormData()
 
   formData.append('image', image)
@@ -66,6 +59,5 @@ function addMenu(name, price, desc, image) {
     method: 'POST',
     headers: authHeader(),
     body: formData
-  })
-    .then(handleResponse)
+  }).then(handleResponse)
 }

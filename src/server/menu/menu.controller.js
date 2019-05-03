@@ -8,7 +8,6 @@ const upload = require('../_helpers/upload')
 const Resize = require('../_helpers/resize')
 
 router.post('/upload', upload.single('image'), async (req, res) => {
-
   const imagepath = path.join(__dirname, '/public/images')
   const fileUpload = new Resize(imagepath)
 
@@ -21,7 +20,12 @@ router.post('/upload', upload.single('image'), async (req, res) => {
   return res.status(201).json({ name: filename })
 })
 
-router.post('/addMenu', upload.single('image'), authorize('admin', 'manager'), addMenu)
+router.post(
+  '/addMenu',
+  upload.single('image'),
+  authorize('admin', 'manager'),
+  addMenu
+)
 router.get('/getMenu', authorize(), getMenu)
 router.put('/updateMenu', authorize('admin', 'manager'), updateMenu)
 router.delete('/deleteMenu', authorize('admin', 'manager'), deleteMenu)
@@ -31,39 +35,56 @@ module.exports = router
 
 function getMenuByName(req, res, next) {
   const { name } = req.params
-  menuService.getMenuByName({ name })
-    .then(menu => menu ? res.json(menu) : res.status(400).json({ message: "menu not found" }))
-    .catch(error => { next(error) })
+  menuService
+    .getMenuByName({ name })
+    .then(menu =>
+      menu
+        ? res.json(menu)
+        : res.status(400).json({ message: 'menu not found' })
+    )
+    .catch(error => {
+      next(error)
+    })
 }
 
 function deleteMenu(req, res, next) {
-  menuService.deleteMenu(req.body)
+  menuService
+    .deleteMenu(req.body)
     .then(() => res.json())
-    .catch(error => { next(error) })
+    .catch(error => {
+      next(error)
+    })
 }
 
 function updateMenu(req, res, next) {
-  menuService.updateMenu(req.body)
-    .then(menu => menu ? res.json(menu) : res.status(400).json({ message: "can not update menu" }))
-    .catch(error => { next(error) })
+  menuService
+    .updateMenu(req.body)
+    .then(menu =>
+      menu
+        ? res.json(menu)
+        : res.status(400).json({ message: 'can not update menu' })
+    )
+    .catch(error => {
+      next(error)
+    })
 }
 
 function getMenu(req, res, next) {
   console.log(req.protocol + '://' + req.get('host') + req.originalUrl)
-  menuService.getMenu()
+  menuService
+    .getMenu()
     .then(items => res.json(items))
     .catch(error => next(error))
 }
 
 async function addMenu(req, res, next) {
-
-  const imagepath = path.join(path.dirname(require.main.filename), '/public/images')
+  const imagepath = path.join(
+    path.dirname(require.main.filename),
+    '/public/images'
+  )
   const fileUpload = new Resize(imagepath)
 
-  const filename = req.file ?
-    await fileUpload.save(req.file.buffer)
-    :
-    ''
+  const filename = req.file ? await fileUpload.save(req.file.buffer) : ''
 
   //if (!req.file) {
   //return res.status(501).json({ message: 'No image file' })
@@ -73,7 +94,8 @@ async function addMenu(req, res, next) {
 
   const body = Object.assign(JSON.parse(req.body.body), { image: filename })
 
-  menuService.addMenu(body)
+  menuService
+    .addMenu(body)
     .then(() => res.json())
     .catch(error => next(error))
 }

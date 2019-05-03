@@ -27,7 +27,7 @@ function currentUserValue() {
 async function checkin(username, date, shift) {
   const requestOptions = {
     method: 'POST',
-    header: postHeader(),
+    headers: postHeader(),
     body: JSON.stringify({ username, date, shift })
   }
 

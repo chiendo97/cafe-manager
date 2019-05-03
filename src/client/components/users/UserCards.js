@@ -1,13 +1,19 @@
 import React from 'react'
 
 import { Card } from 'semantic-ui-react'
+import { Radio } from 'semantic-ui-react'
 import { Button, Modal } from 'semantic-ui-react'
 import { Form } from 'semantic-ui-react'
 import { Image } from 'semantic-ui-react'
 import { Table } from 'semantic-ui-react'
 import { Icon } from 'semantic-ui-react'
 
+import DayPickerInput from 'react-day-picker/DayPickerInput'
+import 'react-day-picker/lib/style.css'
+
 import ConfirmModal from '../_buttons/ConfirmModal'
+
+import { userService } from '../../_services/user.service'
 
 class UserCards extends React.Component {
   constructor(props) {
@@ -23,6 +29,8 @@ class UserCards extends React.Component {
       role: user.role,
       description: user.description,
       checkin: user.checkin,
+      day: '',
+      shift: '',
       modalOpen: false
     }
   }
@@ -40,10 +48,7 @@ class UserCards extends React.Component {
     })
   }
 
-  handleChange = e => {
-    const { name, value } = e.target
-    this.setState({ [name]: value })
-  }
+  handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
   handleOpen = () => this.setState({ modalOpen: true })
 
@@ -63,6 +68,19 @@ class UserCards extends React.Component {
     })
   }
 
+  handleDayChange = selectedDay => {
+    this.setState({
+      day: selectedDay
+    })
+  }
+
+  handleCheckIn = () => {
+    const { username, day, shift } = this.state
+    console.log(day.toLocaleDateString(), shift)
+
+    return userService.checkin(username, day, shift)
+  }
+
   render() {
     const {
       username,
@@ -70,11 +88,11 @@ class UserCards extends React.Component {
       lastname,
       role,
       description,
-      checkin
+      checkin,
+      day,
+      shift
     } = this.state
     const { user } = this.state
-
-    console.log(checkin)
 
     return (
       <Modal
@@ -129,6 +147,43 @@ class UserCards extends React.Component {
                   <input disabled value={role} placeholder="Role" />
                 </Form.Field>
               </Form.Group>
+              <Form.Group inline>
+                <label>Pick Date: </label>
+                <Form.Field>
+                  <DayPickerInput
+                    value={day}
+                    onDayChange={this.handleDayChange}
+                  />
+                </Form.Field>
+                <label>Shift</label>
+                <Form.Field
+                  control={Radio}
+                  label="1"
+                  value="1"
+                  checked={shift === '1'}
+                  name="shift"
+                  onChange={this.handleChange}
+                />
+                <Form.Field
+                  control={Radio}
+                  label="2"
+                  value="2"
+                  checked={shift === '2'}
+                  name="shift"
+                  onChange={this.handleChange}
+                />
+                <Form.Field
+                  control={Radio}
+                  label="3"
+                  value="3"
+                  checked={shift === '3'}
+                  name="shift"
+                  onChange={this.handleChange}
+                />
+                <Button onClick={this.handleCheckIn} floated="right">
+                  Checkin
+                </Button>
+              </Form.Group>
               <Table celled style={{ textAlign: 'center' }}>
                 <Table.Header>
                   <Table.Row>
@@ -146,7 +201,7 @@ class UserCards extends React.Component {
                   {checkin.map(checkin => (
                     <Table.Row key={checkin._id}>
                       <Table.Cell>
-                        {new Date(checkin.time).toDateString()}
+                        {new Date(checkin.time).toLocaleDateString()}
                       </Table.Cell>
                       {checkin.shift === 1 && (
                         <React.Fragment>

@@ -18,10 +18,10 @@ class ConfirmModal extends Component {
         open={open}
         onOpen={this.open}
         onClose={this.close}
-        size='small'
+        size="small"
         trigger={
           <Button negative icon>
-            {children} 
+            {children}
           </Button>
         }
       >
@@ -29,8 +29,13 @@ class ConfirmModal extends Component {
         <Modal.Content>
           <Modal.Description>
             <h1>Are you sure?</h1>
-            <Button negative icon='check' content='Sure' onClick={this.onConfirm} />
-            <Button icon='check' content='Cancel' onClick={this.close} />
+            <Button
+              negative
+              icon="check"
+              content="Sure"
+              onClick={this.onConfirm}
+            />
+            <Button icon="check" content="Cancel" onClick={this.close} />
           </Modal.Description>
         </Modal.Content>
       </Modal>

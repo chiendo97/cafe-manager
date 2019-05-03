@@ -89,6 +89,7 @@ async function checkin({ username, date, shift }) {
     .then(user => {
       if (!user) throw 'User not found: ' + username
 
+      // trung ngay.
       user.checkin.push({
         time: date,
         shift
