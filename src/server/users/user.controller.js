@@ -6,7 +6,11 @@ const { authorize } = require('../_helpers/basic-auth')
 router.post('/authenticate', authenticate)
 router.get('/getAll', authorize('admin'), getAll)
 router.post('/addUser', authorize('admin'), addUser)
-router.get('/getUserByUsername/:username', authorize(), getUserByUsername)
+router.get(
+  '/getUserByUsername/:username',
+  authorize(['admin', 'manager']),
+  getUserByUsername
+)
 router.put('/updateUser', authorize(), updateUser)
 router.delete('/deleteUser', authorize('admin'), deleteUser)
 router.post('/checkin', authorize(['admin', 'manager']), checkin)
@@ -37,6 +41,7 @@ function getUserByUsername(req, res, next) {
   const { username } = req.params
   const currentUser = req.user
 
+  // remove soon
   if (username !== currentUser.username && currentUser.role !== 'admin') {
     return res.status(401).json({ message: 'Unauthorized' })
   }
@@ -91,9 +96,7 @@ function authenticate(req, res, next) {
 function getAll(req, res, next) {
   userService
     .getAll()
-    .then(users => {
-      res.json(users)
-    })
+    .then(users => res.json(users))
     .catch(error => next(error))
 }
 

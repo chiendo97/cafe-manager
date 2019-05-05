@@ -26,14 +26,10 @@ const defaultRole = someRole => {
           username: someRole,
           password: 't',
           firstname: 'Chien',
-          lastname: 'Le',
+          lastname: someRole,
           role: data._id,
-          checkin: [
-            {
-              time: Date.now(),
-              shift: 1
-            }
-          ]
+          checkin: [],
+          salary: 25
         },
         { upsert: true },
         function(err, data) {

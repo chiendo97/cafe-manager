@@ -23,6 +23,11 @@ const userSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Role'
   },
+  salary: {
+    type: mongoose.Schema.Types.Number,
+    default: 0,
+    required: true
+  },
   checkin: [
     {
       time: {

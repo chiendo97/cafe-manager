@@ -49,7 +49,7 @@ class UsersPage extends React.Component {
       })
   }
 
-  handleUpdate = (username, firstname, lastname, description) => {
+  handleUpdate = async (username, firstname, lastname, description) => {
     return userService.updateUser(username, firstname, lastname).then(user => {
       userService.getAll().then(users => {
         this.setState({ users })
@@ -59,7 +59,7 @@ class UsersPage extends React.Component {
     })
   }
 
-  handleDelete = username => {
+  handleDelete = async username => {
     return userService.deleteUser(username).then(user => {
       userService.getAll().then(users => {
         this.setState({ users })
@@ -77,6 +77,14 @@ class UsersPage extends React.Component {
     this.setState({ search: '' })
   }
 
+  handleCheckIn = async (username, day, shift) => {
+    return userService.checkin(username, day, shift).then(() => {
+      userService.getAll().then(users => {
+        this.setState({ users })
+      })
+    })
+  }
+
   render() {
     const { users } = this.state
 
@@ -84,7 +92,6 @@ class UsersPage extends React.Component {
     const isMatch = result => re.test(result.firstname + ' ' + result.lastname)
     const searchUsers = users.filter(isMatch)
 
-    const admins = searchUsers.filter(user => user.role === 'admin')
     const managers = searchUsers.filter(user => user.role === 'manager')
     const employee = searchUsers.filter(user => user.role === 'employee')
 
@@ -112,8 +119,10 @@ class UsersPage extends React.Component {
               key={user.username}
               handleUpdate={this.handleUpdate}
               handleDelete={this.handleDelete}
+              handleCheckIn={this.handleCheckIn}
             />
           ))}
+          <AddUserModal handleAddUser={this.handleAddUser} />
         </Card.Group>
         <Divider horizontal>
           <Header as="h4">
@@ -128,6 +137,7 @@ class UsersPage extends React.Component {
               key={user.username}
               handleUpdate={this.handleUpdate}
               handleDelete={this.handleDelete}
+              handleCheckIn={this.handleCheckIn}
             />
           ))}
           <AddUserModal handleAddUser={this.handleAddUser} />

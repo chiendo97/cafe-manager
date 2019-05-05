@@ -165,10 +165,7 @@ class AddReceiptModal extends React.Component {
                             onChange={this.handleInputAmountChange}
                           />
                         </Table.Cell>
-                        <Table.Cell>
-                          {item.total}
-                          <Label>.000 VND</Label>
-                        </Table.Cell>
+                        <Table.Cell>{item.total}</Table.Cell>
                       </Table.Row>
                     ))}
                   </Table.Body>
@@ -210,10 +207,7 @@ class AddReceiptModal extends React.Component {
                       <Table.HeaderCell />
                       <Table.HeaderCell>Total:</Table.HeaderCell>
                       <Table.HeaderCell />
-                      <Table.HeaderCell>
-                        {total}
-                        <Label>.000 VND</Label>
-                      </Table.HeaderCell>
+                      <Table.HeaderCell>{total}</Table.HeaderCell>
                     </Table.Row>
                   </Table.Footer>
                 </Table>

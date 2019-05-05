@@ -5,6 +5,5 @@ module.exports = {
 }
 
 async function getAllRole() {
-  return Role.find({})
-    .then(r => r)
+  return Role.find({}).then(r => r)
 }

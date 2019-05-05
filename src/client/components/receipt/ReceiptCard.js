@@ -6,9 +6,7 @@ import { Form } from 'semantic-ui-react'
 import { Icon, Label, Menu, Table } from 'semantic-ui-react'
 
 class ReceiptCard extends React.Component {
-
   constructor(props) {
-
     super(props)
 
     this.state = {
@@ -21,22 +19,19 @@ class ReceiptCard extends React.Component {
   handleOpen = () => this.setState({ modalOpen: true })
 
   render() {
-
     const { user, list, total, created } = this.props.receipt
     const time = new Date(created).toLocaleString()
 
     return (
-      <Modal 
+      <Modal
         trigger={
-          <Card
-            onClick={this.handleOpen}
-          >
+          <Card onClick={this.handleOpen}>
             <Card.Content>
               <Card.Header>
                 <span>{user}</span>
               </Card.Header>
               <Card.Meta>
-                <span className='date'>{time}</span>
+                <span className="date">{time}</span>
               </Card.Meta>
               <Card.Description>
                 <Table celled>
@@ -60,7 +55,7 @@ class ReceiptCard extends React.Component {
                   <Table.Footer>
                     <Table.Row>
                       <Table.HeaderCell>Total:</Table.HeaderCell>
-                      <Table.HeaderCell></Table.HeaderCell>
+                      <Table.HeaderCell />
                       <Table.HeaderCell>{total}</Table.HeaderCell>
                     </Table.Row>
                   </Table.Footer>
@@ -74,17 +69,17 @@ class ReceiptCard extends React.Component {
         closeIcon
       >
         <Modal.Header>Receipt Info</Modal.Header>
-        <Modal.Content image>
+        <Modal.Content>
           <Modal.Description>
             <Form>
               <Form.Group inline>
                 <Form.Field>
                   <label>User: </label>
-                  <input readOnly value={user} placeholder='User: ' />
+                  <input readOnly value={user} placeholder="User: " />
                 </Form.Field>
                 <Form.Field>
                   <label>Created: </label>
-                  <input readOnly value={time} placeholder='Total: ' />
+                  <input readOnly value={time} placeholder="Total: " />
                 </Form.Field>
               </Form.Group>
               <Table celled>
@@ -108,12 +103,14 @@ class ReceiptCard extends React.Component {
                 <Table.Footer>
                   <Table.Row>
                     <Table.HeaderCell>Total:</Table.HeaderCell>
-                    <Table.HeaderCell></Table.HeaderCell>
+                    <Table.HeaderCell />
                     <Table.HeaderCell>{total}</Table.HeaderCell>
                   </Table.Row>
                 </Table.Footer>
               </Table>
-              <Button primary type='submit' onClick={this.handleClose}>Cancel</Button>
+              <Button primary type="submit" onClick={this.handleClose}>
+                Cancel
+              </Button>
             </Form>
           </Modal.Description>
         </Modal.Content>

@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
@@ -24,7 +23,7 @@ const receipt = new Schema({
   ],
   total: {
     type: Number,
-    default: 0,
+    default: 0
   },
   created: {
     type: Date,
@@ -34,7 +33,7 @@ const receipt = new Schema({
 
 receipt.pre('save', function(next) {
   this.total = this.list.reduce((pre, cur) => pre + cur.total, 0)
-  next();   
+  next()
 })
 
 const Receipt = mongoose.model('Receipt', receipt)

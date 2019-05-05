@@ -20,7 +20,7 @@ class Resize {
         background: {
           r: 255,
           g: 255,
-          b: 255,
+          b: 255
         }
       })
       .toFile(filepath)
@@ -29,12 +29,10 @@ class Resize {
   }
 
   static filename() {
-
     return `${uuidv4()}.png`
   }
 
   filepath(filename) {
-
     return path.resolve(`${this.folder}/${filename}`)
   }
 }
