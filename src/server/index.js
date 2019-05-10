@@ -30,6 +30,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../../deploy/index.html'))
 })
 
+
 app.use(errorHandler)
 
 const port = process.env.PORT || 4000
