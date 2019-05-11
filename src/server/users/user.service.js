@@ -89,11 +89,20 @@ async function checkin({ username, date, shift }) {
     .then(user => {
       if (!user) throw 'User not found: ' + username
 
-      // trung ngay.
-      user.checkin.push({
-        time: date,
-        shift
+      const index = user.checkin.findIndex(ct => {
+        const newDate = new Date(date).setHours(12, 0, 0, 0)
+        const curDate = new Date(ct.time).setHours(12, 0, 0, 0)
+        return newDate === curDate
       })
+
+      if (index === -1) {
+        user.checkin.push({
+          time: date,
+          shift
+        })
+      } else {
+        user.checkin[index].shift = shift
+      }
 
       return user.save()
     })
