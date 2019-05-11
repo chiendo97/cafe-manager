@@ -14,7 +14,7 @@ async function getReceipt() {
       const receipts = receipt.map(r => {
         const receipt = {
           ...r,
-          user: r.use ? r.user.firstname + ' ' + r.user.lastname : 'Unknow'
+          user: r.user ? r.user.firstname + ' ' + r.user.lastname : 'Unknow'
         }
         return receipt
       })
