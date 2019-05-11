@@ -17,37 +17,35 @@ class AddUserModal extends React.Component {
     super(props)
 
     this.state = {
-      username: '',
-      password: '',
-      firstname: '',
-      lastname: '',
-      role: '',
-      description: '',
+      user: {
+        username: '',
+        password: '',
+        firstname: '',
+        lastname: '',
+        role: '',
+        description: '',
+        salary: ''
+      },
       modalOpen: false
     }
   }
 
-  handleChange = (e, { name, value }) => this.setState({ [name]: value })
+  handleChange = (e, { name, value }) => {
+    const user = this.state.user
+    user[name] = value
+    this.setState({ user })
+  }
 
   handleClose = () => this.setState({ modalOpen: false })
 
   handleOpen = () => this.setState({ modalOpen: true })
 
   handleSubmit = () => {
-    const {
-      username,
-      password,
-      firstname,
-      lastname,
-      role,
-      description
-    } = this.state
-    console.log(username, password, firstname, lastname, role, description)
-    this.props
-      .handleAddUser(username, password, firstname, lastname, role)
-      .then(user => {
-        this.handleClose()
-      })
+    const user = this.state.user
+
+    this.props.handleAddUser(user).then(() => {
+      this.handleClose()
+    })
   }
 
   render() {
@@ -57,8 +55,9 @@ class AddUserModal extends React.Component {
       firstname,
       lastname,
       role,
+      salary,
       description
-    } = this.state
+    } = this.state.user
 
     return (
       <Modal
@@ -137,6 +136,16 @@ class AddUserModal extends React.Component {
                   value="employee"
                   checked={role === 'employee'}
                   name="role"
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Field
+                  control={Input}
+                  label="Salary"
+                  value={salary}
+                  name="salary"
+                  placeholder="Salary"
                   onChange={this.handleChange}
                 />
               </Form.Group>

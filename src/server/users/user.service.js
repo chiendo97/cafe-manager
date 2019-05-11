@@ -70,7 +70,6 @@ async function getAll() {
     .exec()
     .then(users =>
       users.map(u => {
-        //const { password, ...userWithoutPassword } = u
         const userWithoutPassword = {
           ...u,
           role: u.role.role,
@@ -108,18 +107,15 @@ async function checkin({ username, date, shift }) {
     })
 }
 
-async function addUser({ username, password, firstname, lastname, role }) {
-  return Role.findOne({ role })
+async function addUser(user) {
+  return Role.findOne({ role: user.role })
     .exec()
     .then(roleModel => {
       if (!roleModel) throw 'Role not found: ' + role
-      const user = new User({
-        username,
-        password,
-        firstname,
-        lastname,
+      const newUser = new User({
+        ...user,
         role: roleModel._id
       })
-      return user.save()
+      return newUser.save()
     })
 }

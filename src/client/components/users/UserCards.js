@@ -177,6 +177,10 @@ class UserCards extends React.Component {
                   <input disabled value={role} placeholder="Role" />
                 </Form.Field>
               </Form.Group>
+              <Form.Field inline>
+                <label>Salary</label>
+                <input disabled value={salary} placeholder="Role" />
+              </Form.Field>
               <Tab
                 panes={[
                   {

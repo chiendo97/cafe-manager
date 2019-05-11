@@ -65,11 +65,11 @@ async function getUserByUsername(username) {
   )
 }
 
-async function addUser(username, password, firstname, lastname, role) {
+async function addUser(user) {
   const requestOptions = {
     method: 'POST',
     headers: postHeader(),
-    body: JSON.stringify({ username, password, firstname, lastname, role })
+    body: JSON.stringify(user)
   }
 
   return fetch('/api/users/addUser', requestOptions).then(handleResponse)
