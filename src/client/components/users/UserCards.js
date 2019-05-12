@@ -76,6 +76,10 @@ class UserCards extends React.Component {
   }
 
   handleDayChange = selectedDay => {
+    const date = new Date()
+    selectedDay.setHours(date.getHours())
+    selectedDay.setMinutes(date.getMinutes())
+    selectedDay.setSeconds(date.getSeconds())
     this.setState({
       day: selectedDay
     })
@@ -105,6 +109,7 @@ class UserCards extends React.Component {
       return a.time < b.time ? 1 : -1
     })
 
+    console.log(checkin)
 
     const groupByYear = checkin.reduce((groupByYear, obj) => {
       const year = new Date(obj.time).getFullYear()
@@ -245,7 +250,7 @@ class UserCards extends React.Component {
                             {checkin.map(checkin => (
                               <Table.Row key={checkin._id}>
                                 <Table.Cell>
-                                  {new Date(checkin.time).toLocaleDateString()}
+                                  {new Date(checkin.time).toLocaleString()}
                                 </Table.Cell>
                                 {checkin.shift === 1 && (
                                   <React.Fragment>

@@ -113,6 +113,7 @@ class UsersPage extends React.Component {
           </Header>
         </Divider>
         <Card.Group itemsPerRow={6}>
+          <AddUserModal handleAddUser={this.handleAddUser} />
           {managers.map(user => (
             <UserCards
               user={user}
@@ -122,7 +123,6 @@ class UsersPage extends React.Component {
               handleCheckIn={this.handleCheckIn}
             />
           ))}
-          <AddUserModal handleAddUser={this.handleAddUser} />
         </Card.Group>
         <Divider horizontal>
           <Header as="h4">
@@ -131,6 +131,7 @@ class UsersPage extends React.Component {
           </Header>
         </Divider>
         <Card.Group itemsPerRow={6}>
+          <AddUserModal handleAddUser={this.handleAddUser} />
           {employee.map(user => (
             <UserCards
               user={user}
@@ -140,7 +141,6 @@ class UsersPage extends React.Component {
               handleCheckIn={this.handleCheckIn}
             />
           ))}
-          <AddUserModal handleAddUser={this.handleAddUser} />
         </Card.Group>
       </div>
     )

@@ -7,18 +7,14 @@ module.exports = {
 }
 
 async function exportItem({ name, amount }) {
-  return Storage.findOneAndUpdate(
-    { name },
-    {
-      $inc: {
-        amount: -1 * amount
-      }
-    },
-    { new: true }
-  ).then(item => {
-    if (!item) throw 'Item not found'
-    return item
-  })
+  return Storage.findOne({ name })
+    .exec()
+    .then(storage => {
+      if (!storage) throw 'Item not found'
+      if (storage.amount < amount) throw 'Amount negative'
+      storage.amount -= amount
+      return storage.save()
+    })
 }
 
 async function getStorage() {
@@ -26,7 +22,6 @@ async function getStorage() {
     if (err) {
       throw err
     }
-    console.log(items)
     return items
   })
 }

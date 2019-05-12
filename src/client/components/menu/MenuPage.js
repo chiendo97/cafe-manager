@@ -12,7 +12,6 @@ import { menuService } from '../../_services/menu.service'
 import { userService } from '../../_services/user.service'
 
 class MenuPage extends React.Component {
-
   constructor(props) {
     super(props)
 
@@ -20,59 +19,57 @@ class MenuPage extends React.Component {
       user: {},
       search: '',
       menu: [],
-      searchMenu: [],
+      searchMenu: []
     }
-
   }
 
   componentDidMount() {
-
     userService.currentUser.subscribe(user => this.setState({ user }))
 
     //menuService.getMenu().then(menu => this.setState({ menu }))
-    menuService.getMenu().then(menu => this.setState({ menu, searchMenu: menu }))
+    menuService
+      .getMenu()
+      .then(menu => this.setState({ menu, searchMenu: menu }))
   }
 
   handleAddMenu = (name, price, description, image) => {
-
     return menuService.addMenu(name, price, description, image).then(menu => {
       //menuService.getMenu().then(menu => this.setState({ menu }))
-      menuService.getMenu().then(menu => this.setState({ menu, searchMenu: menu }))
+      menuService
+        .getMenu()
+        .then(menu => this.setState({ menu, searchMenu: menu }))
     })
   }
 
   handleUpdate = (name, price, description) => {
-
     return menuService.updateMenu(name, price, description).then(menu => {
       //menuService.getMenu().then(menu => this.setState({ menu }))
-      menuService.getMenu().then(menu => this.setState({ menu, searchMenu: menu }))
+      menuService
+        .getMenu()
+        .then(menu => this.setState({ menu, searchMenu: menu }))
     })
   }
 
-  handleDelete = (name) => {
-
+  handleDelete = name => {
     return menuService.deleteMenu(name).then(menu => {
       //menuService.getMenu().then(menu => this.setState({ menu }))
-      menuService.getMenu().then(menu => this.setState({ menu, searchMenu: menu }))
+      menuService
+        .getMenu()
+        .then(menu => this.setState({ menu, searchMenu: menu }))
     })
   }
 
   handleSearch = (e, { value }) => {
-
     this.setState({ search: value })
   }
 
   handleSearchBlur = () => {
-
     this.setState({ search: '' })
   }
 
-  handleImage = (url) => {
-
-  }
+  handleImage = url => {}
 
   render() {
-
     const { menu, user } = this.state
 
     const re = new RegExp(_.escapeRegExp(this.state.search), 'i')
@@ -85,21 +82,25 @@ class MenuPage extends React.Component {
       <div>
         <Search
           input={{ icon: 'search', iconPosition: 'left' }}
-          placeholder='Search menu'
+          placeholder="Search menu"
           open={false}
-          style={{ 'textAlign': 'center' }}
+          style={{ textAlign: 'center' }}
           value={this.state.search}
           onSearchChange={this.handleSearch}
           onBlur={this.handleSearchBlur}
         />
         <Divider horizontal>Menu</Divider>
         <Card.Group itemsPerRow={6}>
-          {
-            searchMenu.map(m => <MenuCard key={m.name} menu={m} user={user} handleUpdate={this.handleUpdate} handleDelete={this.handleDelete} />)
-          }
-          {user && user.role === 'admin' &&
-            <AddMenuModal handleAddMenu={this.handleAddMenu} />
-          }
+          <AddMenuModal handleAddMenu={this.handleAddMenu} />
+          {searchMenu.map(m => (
+            <MenuCard
+              key={m.name}
+              menu={m}
+              user={user}
+              handleUpdate={this.handleUpdate}
+              handleDelete={this.handleDelete}
+            />
+          ))}
         </Card.Group>
       </div>
     )

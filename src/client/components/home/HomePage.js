@@ -10,11 +10,7 @@ class HomePage extends React.Component {
   render() {
     return (
       <div>
-        <Image
-          src={'images/home.jpg'}
-          style={{ width: '100%', height: 'auto', display: 'block' }}
-          avatar
-        />
+        <Image src={'images/home.jpg'} centered bordered verticalAlign />
       </div>
     )
   }
