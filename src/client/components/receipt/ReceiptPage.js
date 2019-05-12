@@ -67,13 +67,13 @@ class ReceiptPage extends React.Component {
               render: () => (
                 <Tab.Pane>
                   <Card.Group itemsPerRow={4}>
-                    {receipt.map(r => (
-                      <ReceiptCard key={r._id} receipt={r} />
-                    ))}
                     <AddReceiptModal
                       menu={menu}
                       handleAddReceipt={this.handleAddReceipt}
                     />
+                    {receipt.map(r => (
+                      <ReceiptCard key={r._id} receipt={r} />
+                    ))}
                   </Card.Group>
                 </Tab.Pane>
               )

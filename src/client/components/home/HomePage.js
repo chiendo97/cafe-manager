@@ -10,7 +10,7 @@ class HomePage extends React.Component {
   render() {
     return (
       <div>
-        <Image src={'images/home.jpg'} centered bordered verticalAlign />
+        <Image src={'images/home.jpg'} centered />
       </div>
     )
   }
