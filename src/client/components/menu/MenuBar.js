@@ -9,7 +9,7 @@ class MenuBar extends Component {
 
     return (
       <div>
-        <Menu color="black" fixed="top" inverted>
+        <Menu color="blue" fixed="top" inverted>
           <Container>
             <Menu.Item children={<Link to="/">Cafe-Manager</Link>} />
             {user && user.role === 'admin' && (

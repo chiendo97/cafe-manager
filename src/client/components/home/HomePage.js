@@ -10,97 +10,11 @@ class HomePage extends React.Component {
   render() {
     return (
       <div>
-        <h1>HomePage</h1>
-        <Grid columns={12} centered>
-          <Grid.Column width={10}>
-            <Card.Group itemsPerRow={4}>
-              <Card>
-                <Card.Content>
-                  <Card.Header>Matthew</Card.Header>
-                  <Card.Meta>
-                    <span className="date">Joined in 2015</span>
-                  </Card.Meta>
-                  <Card.Description>
-                    Matthew is a musician living in Nashville.
-                  </Card.Description>
-                </Card.Content>
-                <Card.Content extra>
-                  <a>22 Friends</a>
-                </Card.Content>
-              </Card>
-              <Card>
-                <Card.Content>
-                  <Card.Header>Matthew</Card.Header>
-                  <Card.Meta>
-                    <span className="date">Joined in 2015</span>
-                  </Card.Meta>
-                  <Card.Description>
-                    Matthew is a musician living in Nashville.
-                  </Card.Description>
-                </Card.Content>
-                <Card.Content extra>
-                  <a>22 Friends</a>
-                </Card.Content>
-              </Card>
-              <Card>
-                <Card.Content>
-                  <Card.Header>Matthew</Card.Header>
-                  <Card.Meta>
-                    <span className="date">Joined in 2015</span>
-                  </Card.Meta>
-                  <Card.Description>
-                    Matthew is a musician living in Nashville.
-                  </Card.Description>
-                </Card.Content>
-                <Card.Content extra>
-                  <a>22 Friends</a>
-                </Card.Content>
-              </Card>
-              <Card>
-                <Card.Content>
-                  <Card.Header>Matthew</Card.Header>
-                  <Card.Meta>
-                    <span className="date">Joined in 2015</span>
-                  </Card.Meta>
-                  <Card.Description>
-                    Matthew is a musician living in Nashville.
-                  </Card.Description>
-                </Card.Content>
-                <Card.Content extra>
-                  <a>22 Friends</a>
-                </Card.Content>
-              </Card>
-              <Card>
-                <Card.Content>
-                  <Card.Header>Matthew</Card.Header>
-                  <Card.Meta>
-                    <span className="date">Joined in 2015</span>
-                  </Card.Meta>
-                  <Card.Description>
-                    Matthew is a musician living in Nashville.
-                  </Card.Description>
-                </Card.Content>
-                <Card.Content extra>
-                  <a>22 Friends</a>
-                </Card.Content>
-              </Card>
-              <Card>
-                <Card.Content>
-                  <Card.Header>Matthew</Card.Header>
-                  <Card.Meta>
-                    <span className="date">Joined in 2015</span>
-                  </Card.Meta>
-                  <Card.Description>
-                    Matthew is a musician living in Nashville.
-                  </Card.Description>
-                </Card.Content>
-                <Card.Content extra>
-                  <a>22 Friends</a>
-                </Card.Content>
-              </Card>
-            </Card.Group>
-          </Grid.Column>
-        </Grid>
+        <Image
+          src={'images/home.jpg'}
+          style={{ width: '100%', height: 'auto', display: 'block' }}
+          avatar
+        />
       </div>
     )
   }

@@ -135,6 +135,41 @@ class AddReceiptModal extends React.Component {
           <Modal.Description>
             <Form>
               <Form.Group>
+                <Card.Group itemsPerRow={5}>
+                  {menu.map(m => (
+                    <Card
+                      onClick={() => this.handleCardOnClick(m.name)}
+                      key={m.name}
+                    >
+                      {m.image ? (
+                        <Image
+                          src={'images/' + m.image}
+                          style={{
+                            width: '100%',
+                            height: 'auto',
+                            display: 'block'
+                          }}
+                          avatar
+                        />
+                      ) : (
+                        <Image
+                          src="images/default.jpg"
+                          style={{
+                            width: '100%',
+                            height: 'auto',
+                            display: 'block'
+                          }}
+                          avatar
+                        />
+                      )}
+                      <Card.Content>
+                        <Card.Header>{m.name}</Card.Header>
+                      </Card.Content>
+                    </Card>
+                  ))}
+                </Card.Group>
+              </Form.Group>
+              <Form.Group>
                 <Table>
                   <Table.Header>
                     <Table.Row>
@@ -211,41 +246,6 @@ class AddReceiptModal extends React.Component {
                     </Table.Row>
                   </Table.Footer>
                 </Table>
-              </Form.Group>
-              <Form.Group>
-                <Card.Group itemsPerRow={5}>
-                  {menu.map(m => (
-                    <Card
-                      onClick={() => this.handleCardOnClick(m.name)}
-                      key={m.name}
-                    >
-                      {m.image ? (
-                        <Image
-                          src={'images/' + m.image}
-                          style={{
-                            width: '100%',
-                            height: 'auto',
-                            display: 'block'
-                          }}
-                          avatar
-                        />
-                      ) : (
-                        <Image
-                          src="images/default.jpg"
-                          style={{
-                            width: '100%',
-                            height: 'auto',
-                            display: 'block'
-                          }}
-                          avatar
-                        />
-                      )}
-                      <Card.Content>
-                        <Card.Header>{m.name}</Card.Header>
-                      </Card.Content>
-                    </Card>
-                  ))}
-                </Card.Group>
               </Form.Group>
             </Form>
           </Modal.Description>
