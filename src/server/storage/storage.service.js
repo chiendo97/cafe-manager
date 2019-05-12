@@ -3,7 +3,12 @@ const Storage = require('../db/models/storage.js')
 module.exports = {
   getStorage,
   addItem,
-  exportItem
+  exportItem,
+  removeItem
+}
+
+async function removeItem({ name }) {
+  return Storage.findOneAndDelete({ name }).exec()
 }
 
 async function exportItem({ name, amount }) {

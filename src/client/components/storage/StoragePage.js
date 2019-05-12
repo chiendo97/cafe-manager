@@ -42,6 +42,14 @@ class StoragePage extends React.Component {
     })
   }
 
+  handleDelete = name => {
+    return storageService.removeItem(name).then(() => {
+      storageService.getStorage().then(storage => {
+        this.setState({ storage })
+      })
+    })
+  }
+
   handleSearch = (e, { value }) => {
     this.setState({ search: value })
   }
@@ -77,6 +85,7 @@ class StoragePage extends React.Component {
                 key={s.name}
                 item={s}
                 handleExport={this.handleExport}
+                handleDelete={this.handleDelete}
               />
             )
           })}

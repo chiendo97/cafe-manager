@@ -5,9 +5,17 @@ const { authorize } = require('../_helpers/basic-auth')
 
 router.post('/addItem', authorize('admin', 'manager'), addItem)
 router.get('/getStorage', authorize(), getStorage)
+router.delete('/removeItem', authorize(), removeItem)
 router.put('/exportItem', authorize(['manager', 'admin']), exportItem)
 
 module.exports = router
+
+function removeItem(req, res, next) {
+  storageService
+    .removeItem(req.body)
+    .then(() => res.json())
+    .catch(error => next(error))
+}
 
 function exportItem(req, res, next) {
   storageService

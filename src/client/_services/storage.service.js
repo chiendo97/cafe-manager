@@ -5,37 +5,44 @@ export const storageService = {
   getStorage,
   addItem,
   exportItem,
+  removeItem
 }
 
-function exportItem(name, amount) {
+async function removeItem(name) {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: postHeader(),
+    body: JSON.stringify({ name })
+  }
 
+  return fetch('/api/storage/removeItem', requestOptions).then(handleResponse)
+}
+
+async function exportItem(name, amount) {
   const requestOptions = {
     method: 'PUT',
     headers: postHeader(),
     body: JSON.stringify({ name, amount })
   }
 
-  return fetch('/api/storage/exportItem', requestOptions)
-    .then(handleResponse)
+  return fetch('/api/storage/exportItem', requestOptions).then(handleResponse)
 }
 
-function getStorage() {
+async function getStorage() {
   const requestOptions = {
-    method : 'GET',
+    method: 'GET',
     headers: authHeader()
   }
 
   return fetch('/api/storage/getStorage', requestOptions).then(handleResponse)
-
 }
 
-function addItem(name, amount) {
+async function addItem(name, amount) {
   const requestOptions = {
     method: 'POST',
     headers: postHeader(),
     body: JSON.stringify({ name, amount })
   }
 
-  return fetch('/api/storage/addItem', requestOptions)
-    .then(handleResponse)
+  return fetch('/api/storage/addItem', requestOptions).then(handleResponse)
 }

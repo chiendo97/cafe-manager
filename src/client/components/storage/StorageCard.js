@@ -4,6 +4,9 @@ import { Card } from 'semantic-ui-react'
 import { Button, Modal } from 'semantic-ui-react'
 import { Form } from 'semantic-ui-react'
 import { Input } from 'semantic-ui-react'
+import { Message } from 'semantic-ui-react'
+
+import ConfirmModal from '../_buttons/ConfirmModal'
 
 class StorageCard extends React.Component {
   constructor(props) {
@@ -17,7 +20,11 @@ class StorageCard extends React.Component {
       amount: item.amount,
       exportAmount: '',
       importAmount: '',
-      modalOpen: false
+      modalOpen: false,
+      error: {
+        visible: false,
+        message: ''
+      }
     }
   }
 
@@ -59,12 +66,41 @@ class StorageCard extends React.Component {
   }
 
   handleExport = () => {
-    const { name, exportAmount } = this.state
+    const { name, amount, exportAmount } = this.state
+
+    if (amount < exportAmount) {
+      this.setState({
+        error: {
+          visible: true,
+          message: 'Negative amount'
+        }
+      })
+      return
+    }
+
     this.props.handleExport(name, exportAmount).then(storage => {
       this.setState({
         modalOpen: false
       })
       return storage
+    })
+  }
+
+  handleDelete = () => {
+    const { name } = this.state
+    this.props.handleDelete(name).then(() => {
+      this.setState({
+        modalOpen: false
+      })
+    })
+  }
+
+  handleDismiss = () => {
+    this.setState({
+      error: {
+        visible: false,
+        message: ''
+      }
     })
   }
 
@@ -127,6 +163,14 @@ class StorageCard extends React.Component {
                   Export
                 </Button>
               </Form.Group>
+              {this.state.error.visible && (
+                <Message
+                  negative
+                  header="Could you check something!"
+                  list={[this.state.error.message]}
+                  onDismiss={this.handleDismiss}
+                />
+              )}
               <Form.Group inline>
                 <Form.Field>
                   <label>Import</label>
@@ -146,6 +190,7 @@ class StorageCard extends React.Component {
                   Import
                 </Button>
               </Form.Group>
+              <ConfirmModal onConfirm={this.handleDelete}>Delete</ConfirmModal>
             </Form>
           </Modal.Description>
         </Modal.Content>

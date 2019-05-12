@@ -9,6 +9,7 @@ import { Table } from 'semantic-ui-react'
 import { Icon } from 'semantic-ui-react'
 import { Input } from 'semantic-ui-react'
 import { Tab } from 'semantic-ui-react'
+import { Message } from 'semantic-ui-react'
 
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import 'react-day-picker/lib/style.css'
@@ -32,7 +33,11 @@ class UserCards extends React.Component {
       salary: user.salary ? user.salary : 0,
       day: '',
       shift: '',
-      modalOpen: false
+      modalOpen: false,
+      error: {
+        visible: false,
+        message: ''
+      }
     }
   }
 
@@ -87,9 +92,27 @@ class UserCards extends React.Component {
 
   handleCheckIn = () => {
     const { username, day, shift } = this.state
-    console.log(day.toLocaleDateString(), shift)
+
+    if (!day || !shift) {
+      this.setState({
+        error: {
+          visible: true,
+          message: 'Please check date and shift'
+        }
+      })
+      return
+    }
 
     this.props.handleCheckIn(username, day, shift)
+  }
+
+  handleDismiss = () => {
+    this.setState({
+      error: {
+        visible: false,
+        message: ''
+      }
+    })
   }
 
   render() {
@@ -108,8 +131,6 @@ class UserCards extends React.Component {
     const checkin = this.state.checkin.sort((a, b) => {
       return a.time < b.time ? 1 : -1
     })
-
-    console.log(checkin)
 
     const groupByYear = checkin.reduce((groupByYear, obj) => {
       const year = new Date(obj.time).getFullYear()
@@ -229,6 +250,14 @@ class UserCards extends React.Component {
                             Checkin
                           </Button>
                         </Form.Group>
+                        {this.state.error.visible && (
+                          <Message
+                            negative
+                            header="Could you check something!"
+                            list={[this.state.error.message]}
+                            onDismiss={this.handleDismiss}
+                          />
+                        )}
                         <Table celled style={{ textAlign: 'center' }}>
                           <Table.Header>
                             <Table.Row>

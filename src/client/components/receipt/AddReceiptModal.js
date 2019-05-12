@@ -1,14 +1,13 @@
 import React from 'react'
 
 import {
-  Select,
   Modal,
   Card,
   Form,
   Icon,
   Input,
-  TextArea,
-  Button
+  Button,
+  Message
 } from 'semantic-ui-react'
 import { Table, Label, Checkbox } from 'semantic-ui-react'
 import { Image } from 'semantic-ui-react'
@@ -23,7 +22,11 @@ class AddReceiptModal extends React.Component {
       name: '',
       amount: '',
       list: [],
-      modalOpen: false
+      modalOpen: false,
+      error: {
+        visible: false,
+        message: ''
+      }
     }
   }
 
@@ -33,6 +36,40 @@ class AddReceiptModal extends React.Component {
 
   handleSubmit = () => {
     const { list } = this.state
+
+    if (list.length === 0) {
+      this.setState({
+        error: {
+          visible: true,
+          message: 'Empty list'
+        }
+      })
+      return
+    }
+
+    const emptyItems = list.filter(item => item.total === 0)
+
+    if (emptyItems.length > 0) {
+      this.setState({
+        error: {
+          visible: true,
+          message: 'Item has empty amount'
+        }
+      })
+      return
+    }
+
+    const checkedItems = list.filter(item => item.checked)
+
+    if (checkedItems.length > 0) {
+      this.setState({
+        error: {
+          visible: true,
+          message: 'Some items has checked. Need to uncheck items first'
+        }
+      })
+      return
+    }
 
     this.props.handleAddReceipt(list).then(() => {
       this.setState({
@@ -106,6 +143,15 @@ class AddReceiptModal extends React.Component {
     this.setState({
       list: list,
       total
+    })
+  }
+
+  handleDismiss = () => {
+    this.setState({
+      error: {
+        visible: false,
+        message: ''
+      }
     })
   }
 
@@ -234,6 +280,14 @@ class AddReceiptModal extends React.Component {
                         >
                           Delete All
                         </Button>
+                        {this.state.error.visible && (
+                          <Message
+                            negative
+                            header="Could you check something!"
+                            list={[this.state.error.message]}
+                            onDismiss={this.handleDismiss}
+                          />
+                        )}
                       </Table.HeaderCell>
                     </Table.Row>
                   </Table.Footer>
