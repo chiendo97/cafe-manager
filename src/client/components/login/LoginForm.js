@@ -19,19 +19,55 @@ class LoginForm extends React.Component {
 
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      error: {
+        visible: false,
+        message: ''
+      }
     }
   }
 
   handleLogin = () => {
     const { username, password } = this.state
-    userService.login(username, password).then(user => {
-      const { from } = this.props.location.state || { from: { pathname: '/' } }
-      this.props.history.push(from)
-    })
+
+    if (username === '' || password === '') {
+      this.setState({
+        error: {
+          visible: true,
+          message: 'Invalid input'
+        }
+      })
+      return
+    }
+
+    userService
+      .login(username, password)
+      .then(user => {
+        const { from } = this.props.location.state || {
+          from: { pathname: '/' }
+        }
+        this.props.history.push(from)
+      })
+      .catch(error => {
+        this.setState({
+          error: {
+            visible: true,
+            message: error
+          }
+        })
+      })
   }
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value })
+
+  handleDismiss = () => {
+    this.setState({
+      error: {
+        visible: false,
+        message: ''
+      }
+    })
+  }
 
   render() {
     const { username, password } = this.state
@@ -76,6 +112,14 @@ class LoginForm extends React.Component {
                 >
                   Login
                 </Button>
+                {this.state.error.visible && (
+                  <Message
+                    negative
+                    header="Could you check something!"
+                    list={[this.state.error.message]}
+                    onDismiss={this.handleDismiss}
+                  />
+                )}
               </Segment>
             </Form>
           </Grid.Column>

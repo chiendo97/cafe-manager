@@ -4,7 +4,7 @@ import {
   Modal,
   Card,
   Form,
-  Icon,
+  Message,
   Input,
   Radio,
   TextArea,
@@ -26,8 +26,21 @@ class AddUserModal extends React.Component {
         description: '',
         salary: ''
       },
-      modalOpen: false
+      modalOpen: false,
+      error: {
+        visible: false,
+        message: ''
+      }
     }
+  }
+
+  handleDismiss = () => {
+    this.setState({
+      error: {
+        visible: false,
+        message: ''
+      }
+    })
   }
 
   handleChange = (e, { name, value }) => {
@@ -42,6 +55,18 @@ class AddUserModal extends React.Component {
 
   handleSubmit = () => {
     const user = this.state.user
+
+    Object.keys(user).forEach(key => {
+      if (user[key] === '') {
+        this.setState({
+          error: {
+            visible: true,
+            message: 'Invalid input'
+          }
+        })
+        return
+      }
+    })
 
     this.props.handleAddUser(user).then(() => {
       this.handleClose()
@@ -165,6 +190,14 @@ class AddUserModal extends React.Component {
                   Cancel
                 </Button>
               </Form.Group>
+              {this.state.error.visible && (
+                <Message
+                  negative
+                  header="Could you check something!"
+                  list={[this.state.error.message]}
+                  onDismiss={this.handleDismiss}
+                />
+              )}
             </Form>
           </Modal.Description>
         </Modal.Content>

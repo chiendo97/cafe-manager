@@ -39,8 +39,11 @@ class ReceiptPage extends React.Component {
   }
 
   render() {
-    const { receipt } = this.state
     const { menu } = this.state
+
+    const receipt = this.state.receipt.sort((a, b) => {
+      return a.created < b.created ? 1 : -1
+    })
 
     const receiptGroupByYear = receipt.reduce((groupByYear, receipt) => {
       const year = new Date(receipt.created).getFullYear()

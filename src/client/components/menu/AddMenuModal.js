@@ -1,11 +1,19 @@
 import React from 'react'
 
-import { Image, Modal, Card, Form, Icon, Input, TextArea, Button } from 'semantic-ui-react'
+import {
+  Image,
+  Modal,
+  Card,
+  Form,
+  Icon,
+  Input,
+  TextArea,
+  Button,
+  Message
+} from 'semantic-ui-react'
 
 class AddMenuModal extends React.Component {
-
   constructor(props) {
-
     super(props)
 
     this.state = {
@@ -15,6 +23,10 @@ class AddMenuModal extends React.Component {
       modalOpen: false,
       image: '',
       previewImgUrl: '',
+      error: {
+        visible: false,
+        message: ''
+      }
     }
   }
 
@@ -24,8 +36,7 @@ class AddMenuModal extends React.Component {
 
   handleOpen = () => this.setState({ modalOpen: true })
 
-  handleFile = (e) => {
-
+  handleFile = e => {
     URL.revokeObjectURL(this.state.previewImgUrl)
     this.setState({
       previewImgUrl: URL.createObjectURL(e.target.files[0]),
@@ -36,24 +47,54 @@ class AddMenuModal extends React.Component {
   handleSubmit = () => {
     const { name, price, description, image } = this.state
 
-    console.log(name, price, description, image)
-    this.props.handleAddMenu(name, price, description, image).then(() => {
-      this.handleClose()
+    if (name === '' || price === '' || description === '') {
+      this.setState({
+        error: {
+          visible: true,
+          message: 'Invalid input'
+        }
+      })
+      return
+    }
+
+    this.props
+      .handleAddMenu(name, price, description, image)
+      .then(() => {
+        this.setState({
+          name: '',
+          price: '',
+          description: '',
+          previewImgUrl: '',
+          modalOpen: false
+        })
+      })
+      .catch(error => {
+        this.setState({
+          error: {
+            visible: true,
+            message: error
+          }
+        })
+      })
+  }
+
+  handleDismiss = () => {
+    this.setState({
+      error: {
+        visible: false,
+        message: ''
+      }
     })
   }
 
   render() {
-
     const { name, price, description } = this.state
 
     return (
       <Modal
         trigger={
-          <Card
-            onClick={this.handleOpen}
-          >
-            <Icon
-              color='black' fitted name='add square' size='massive'></Icon>
+          <Card onClick={this.handleOpen}>
+            <Icon color="black" fitted name="add square" size="massive" />
           </Card>
         }
         open={this.state.modalOpen}
@@ -64,17 +105,50 @@ class AddMenuModal extends React.Component {
         <Modal.Content image>
           <Modal.Description>
             <Form>
-              <Form.Group widths='equal'>
-                <Form.Field control={Input} value={name} label='Name' placeholder='Name' name='name' onChange={this.handleChange} />
-                <Form.Field control={Input} value={price} label='Price' placeholder='Price' name='price' onChange={this.handleChange} />
+              <Form.Group widths="equal">
+                <Form.Field
+                  control={Input}
+                  value={name}
+                  label="Name"
+                  placeholder="Name"
+                  name="name"
+                  onChange={this.handleChange}
+                />
+                <Form.Field
+                  control={Input}
+                  value={price}
+                  label="Price"
+                  placeholder="Price"
+                  name="price"
+                  onChange={this.handleChange}
+                />
               </Form.Group>
-              <Form.Field control={TextArea} value={description} label='Description' placeholder='Make description about new menu...' name='description' onChange={this.handleChange} />
-              <Image size='medium' src={this.state.previewImgUrl}></Image>
-              <Input label='Image' type='file' onChange={this.handleFile}></Input>
+              <Form.Field
+                control={TextArea}
+                value={description}
+                label="Description"
+                placeholder="Make description about new menu..."
+                name="description"
+                onChange={this.handleChange}
+              />
+              <Image size="medium" src={this.state.previewImgUrl} />
+              <Input label="Image" type="file" onChange={this.handleFile} />
               <Form.Group inline>
-                <Button positive type='submit' onClick={this.handleSubmit}>Submit</Button>
-                <Button negative type='submit' onClick={this.handleClose}>Cancel</Button>
+                <Button positive type="submit" onClick={this.handleSubmit}>
+                  Submit
+                </Button>
+                <Button negative type="submit" onClick={this.handleClose}>
+                  Cancel
+                </Button>
               </Form.Group>
+              {this.state.error.visible && (
+                <Message
+                  negative
+                  header="Could you check something!"
+                  list={[this.state.error.message]}
+                  onDismiss={this.handleDismiss}
+                />
+              )}
             </Form>
           </Modal.Description>
         </Modal.Content>

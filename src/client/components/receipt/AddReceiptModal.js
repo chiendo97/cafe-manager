@@ -240,6 +240,7 @@ class AddReceiptModal extends React.Component {
                         <Table.Cell>
                           <Input
                             type="number"
+                            min="0"
                             placeholder="Amount"
                             name={item.name}
                             value={item.amount}

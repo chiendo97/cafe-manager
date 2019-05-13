@@ -4,16 +4,15 @@ const Schema = mongoose.Schema
 const storage = new Schema({
   name: {
     type: String,
-    require: true,
+    required: true,
     unique: true
   },
   price: {
-    type: Number,
-    require: true
+    type: Number
   },
   amount: {
     type: Number,
-    require: true
+    required: true
   }
 })
 
