@@ -7,10 +7,13 @@ import {
   Icon,
   Input,
   Button,
-  Message
+  Message,
+  TextArea,
+  Table,
+  Label,
+  Checkbox,
+  Image
 } from 'semantic-ui-react'
-import { Table, Label, Checkbox } from 'semantic-ui-react'
-import { Image } from 'semantic-ui-react'
 
 class AddReceiptModal extends React.Component {
   constructor(props) {
@@ -20,7 +23,6 @@ class AddReceiptModal extends React.Component {
       user: '',
       total: 0,
       name: '',
-      amount: '',
       list: [],
       modalOpen: false,
       error: {
@@ -97,9 +99,8 @@ class AddReceiptModal extends React.Component {
     })
   }
 
-  handleCardOnClick = name => {
-    console.log('card click ' + name)
-    const amount = 0
+  handleCardOnClick = (name, amount) => {
+    console.log('card click ' + name + ' ' + amount)
     const { menu } = this.props
 
     const menuItem = menu.find(menu => menu.name === name)
@@ -122,8 +123,13 @@ class AddReceiptModal extends React.Component {
       list[index].total = parseInt(list[index].total) + parseInt(listItem.total)
     }
 
+    let total = 0
+    list.forEach(item => (total += item.total))
+
     this.setState({
-      list: list
+      list: list,
+      total,
+      modalMenu: false
     })
   }
 
@@ -158,7 +164,6 @@ class AddReceiptModal extends React.Component {
   render() {
     const { list, total } = this.state
     const { menu } = this.props
-    const { amount } = this.state
 
     return (
       <Modal
@@ -183,35 +188,11 @@ class AddReceiptModal extends React.Component {
               <Form.Group>
                 <Card.Group itemsPerRow={5}>
                   {menu.map(m => (
-                    <Card
-                      onClick={() => this.handleCardOnClick(m.name)}
+                    <MenuModal
                       key={m.name}
-                    >
-                      {m.image ? (
-                        <Image
-                          src={'images/' + m.image}
-                          style={{
-                            width: '100%',
-                            height: 'auto',
-                            display: 'block'
-                          }}
-                          avatar
-                        />
-                      ) : (
-                        <Image
-                          src="images/default.jpg"
-                          style={{
-                            width: '100%',
-                            height: 'auto',
-                            display: 'block'
-                          }}
-                          avatar
-                        />
-                      )}
-                      <Card.Content>
-                        <Card.Header>{m.name}</Card.Header>
-                      </Card.Content>
-                    </Card>
+                      menu={m}
+                      handleAdd={this.handleCardOnClick}
+                    />
                   ))}
                 </Card.Group>
               </Form.Group>
@@ -302,6 +283,123 @@ class AddReceiptModal extends React.Component {
                   </Table.Footer>
                 </Table>
               </Form.Group>
+            </Form>
+          </Modal.Description>
+        </Modal.Content>
+      </Modal>
+    )
+  }
+}
+
+class MenuModal extends React.Component {
+  state = {
+    amount: 0,
+    modalOpen: false
+  }
+
+  open = () => {
+    this.setState({
+      modalOpen: true
+    })
+  }
+
+  close = () => {
+    this.setState({
+      modalOpen: false
+    })
+  }
+
+  handleChange = e => {
+    const { name, value } = e.target
+    this.setState({ [name]: value })
+  }
+
+  handleAdd = () => {
+    const name = this.props.menu.name
+    const amount = this.state.amount
+
+    this.props.handleAdd(name, amount)
+    this.setState({
+      modalOpen: false
+    })
+  }
+
+  render() {
+    const { modalOpen } = this.state
+    const { amount } = this.state
+
+    const m = this.props.menu
+
+    return (
+      <Modal
+        trigger={
+          <Card onClick={this.open}>
+            {m.image ? (
+              <Image
+                src={'images/' + m.image}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block'
+                }}
+                avatar
+              />
+            ) : (
+              <Image
+                src="images/default.jpg"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block'
+                }}
+                avatar
+              />
+            )}
+            <Card.Content>
+              <Card.Header>{m.name}</Card.Header>
+              <Card.Meta>
+                <Label tag size="tiny">
+                  ${m.price}
+                </Label>
+              </Card.Meta>
+            </Card.Content>
+          </Card>
+        }
+        open={modalOpen}
+        onClose={this.close}
+        closeIcon
+      >
+        <Modal.Header>{m.name}</Modal.Header>
+        <Modal.Content>
+          <Modal.Description>
+            <Form>
+              <Form.Group inline>
+                <Form.Field>
+                  <label>Name</label>
+                  <input disabled value={m.name} />
+                </Form.Field>
+                <Form.Field>
+                  <label>Price</label>
+                  <input disabled value={m.price} />
+                </Form.Field>
+                <Form.Field>
+                  <label>Amount</label>
+                  <input
+                    type="number"
+                    min="0"
+                    name="amount"
+                    value={amount}
+                    onChange={this.handleChange}
+                  />
+                </Form.Field>
+              </Form.Group>
+              <Form.Field control={TextArea} disabled value={m.description} />
+              <Button primary type="submit" onClick={this.handleAdd}>
+                Add
+              </Button>
+              <Button positive type="submit" onClick={this.close}>
+                Cancel
+              </Button>
             </Form>
           </Modal.Description>
         </Modal.Content>

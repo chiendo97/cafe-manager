@@ -72,7 +72,7 @@ class AddMenuModal extends React.Component {
         this.setState({
           error: {
             visible: true,
-            message: error
+            message: 'Menu already exist'
           }
         })
       })

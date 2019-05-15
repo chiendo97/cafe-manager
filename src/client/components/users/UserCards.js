@@ -173,42 +173,73 @@ class UserCards extends React.Component {
         <Modal.Content image>
           <Modal.Description>
             <Form>
-              <Form.Group inline>
-                <Form.Field>
-                  <label>Username</label>
-                  <input disabled value={username} placeholder="User name" />
-                </Form.Field>
-              </Form.Group>
-              <Form.Group inline>
-                <Form.Field
-                  autoComplete="false"
-                  control={Input}
-                  value={firstname}
-                  label="Firstname"
-                  placeholder="Firstname"
-                  name="firstname"
-                  onChange={this.handleChange}
-                />
-                <Form.Field
-                  autoComplete="false"
-                  control={Input}
-                  value={lastname}
-                  label="Lastname"
-                  placeholder="Lastname"
-                  name="lastname"
-                  onChange={this.handleChange}
-                />
-                <Form.Field>
-                  <label>Role</label>
-                  <input disabled value={role} placeholder="Role" />
-                </Form.Field>
-              </Form.Group>
-              <Form.Field inline>
-                <label>Salary</label>
-                <input disabled value={salary} placeholder="Role" />
-              </Form.Field>
               <Tab
                 panes={[
+                  {
+                    menuItem: 'User info',
+                    render: () => (
+                      <Tab.Pane>
+                        <Form.Group inline>
+                          <Form.Field>
+                            <label>Username</label>
+                            <input
+                              disabled
+                              value={username}
+                              placeholder="User name"
+                            />
+                          </Form.Field>
+                        </Form.Group>
+                        <Form.Group inline>
+                          <Form.Field
+                            autoComplete="false"
+                            control={Input}
+                            value={firstname}
+                            label="Firstname"
+                            placeholder="Firstname"
+                            name="firstname"
+                            onChange={this.handleChange}
+                          />
+                          <Form.Field
+                            autoComplete="false"
+                            control={Input}
+                            value={lastname}
+                            label="Lastname"
+                            placeholder="Lastname"
+                            name="lastname"
+                            onChange={this.handleChange}
+                          />
+                          <Form.Field>
+                            <label>Role</label>
+                            <input disabled value={role} placeholder="Role" />
+                          </Form.Field>
+                        </Form.Group>
+                        <Form.Field inline>
+                          <label>Salary</label>
+                          <input disabled value={salary} placeholder="Role" />
+                        </Form.Field>
+                        <Button
+                          disabled={!(user && user.role === 'admin')}
+                          primary
+                          type="submit"
+                          onClick={this.handleUpdate}
+                        >
+                          Update
+                        </Button>
+                        {user && user.role === 'admin' && (
+                          <ConfirmModal onConfirm={this.handleDelete}>
+                            Delete
+                          </ConfirmModal>
+                        )}
+                        <Button
+                          positive
+                          type="submit"
+                          onClick={this.handleClose}
+                        >
+                          Cancel
+                        </Button>
+                      </Tab.Pane>
+                    )
+                  },
                   {
                     menuItem: 'Checkin',
                     render: () => (
@@ -246,7 +277,11 @@ class UserCards extends React.Component {
                             name="shift"
                             onChange={this.handleChange}
                           />
-                          <Button onClick={this.handleCheckIn} floated="right">
+                          <Button
+                            primary
+                            onClick={this.handleCheckIn}
+                            floated="right"
+                          >
                             Checkin
                           </Button>
                         </Form.Group>
@@ -382,22 +417,6 @@ class UserCards extends React.Component {
                   }
                 ]}
               />
-              <Button
-                disabled={!(user && user.role === 'admin')}
-                primary
-                type="submit"
-                onClick={this.handleUpdate}
-              >
-                Update
-              </Button>
-              {user && user.role === 'admin' && (
-                <ConfirmModal onConfirm={this.handleDelete}>
-                  Delete
-                </ConfirmModal>
-              )}
-              <Button positive type="submit" onClick={this.handleClose}>
-                Cancel
-              </Button>
             </Form>
           </Modal.Description>
         </Modal.Content>
