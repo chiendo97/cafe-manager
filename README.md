@@ -30,6 +30,9 @@ yarn start (or npm start)
 
 https://cafe-manager-app.herokuapp.com/
 
+username: admin
+password: t
+
 ## Built With
 
 * [Express](https://expressjs.com/) - Back-end framework
