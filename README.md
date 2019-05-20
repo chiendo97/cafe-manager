@@ -1,6 +1,7 @@
 # cafe-manager
 
-Cafe Manager is built for school project. 
+Cafe Manager is a web project for school class. 
+
 Based on https://github.com/crsandeep/simple-react-full-stack
 
 ### Installing
@@ -32,7 +33,10 @@ https://cafe-manager-app.herokuapp.com/
 ## Built With
 
 * [Express](https://expressjs.com/) - Back-end framework
+* [Mongoose](https://mongoosejs.com/) - Backend-Database connect framework
+* [MongoDB](https://www.mongodb.com/) - Backend framework
 * [React](https://reactjs.org/) - Front-end framework
+* [Semantic-UI](https://react.semantic-ui.com/) - Front-end framework
 
 ## Authors
 
@@ -40,11 +44,5 @@ https://cafe-manager-app.herokuapp.com/
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-*
-*
-*
+This project is licensed under the MIT License
 
