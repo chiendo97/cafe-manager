@@ -30,7 +30,7 @@ yarn start (or npm start)
 
 https://cafe-manager-app.herokuapp.com/
 
-username: admin
+username: admin <br>
 password: t
 
 ## Built With
